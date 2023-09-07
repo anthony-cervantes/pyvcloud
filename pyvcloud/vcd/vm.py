@@ -1515,7 +1515,6 @@ class VM(object):
         self.get_resource()
         uri = self.href + '/guestCustomizationSection/'
         gc_section = self.get_guest_customization_section()
-        print(etree.tostring(gc_section, pretty_print=True))
 
         elements_dict = OrderedDict([
             ('Enabled', enabled),
@@ -1569,7 +1568,6 @@ class VM(object):
             new_element = etree.SubElement(new_gc_section, f'{{http://www.vmware.com/vcloud/v1.5}}{element_name}')
             new_element.text = str(element_value).lower() if isinstance(element_value, bool) else str(element_value)
 
-        print(etree.tostring(new_gc_section, pretty_print=True))
 
         return self.client. \
             put_resource(uri, new_gc_section,
