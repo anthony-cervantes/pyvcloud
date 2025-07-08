@@ -1,6 +1,8 @@
 //! Rust implementation for the pyvcloud client. This crate mirrors the
 //! functionality provided by the deprecated Python SDK.
 
+pub mod utils;
+
 /// Prepare a base URI by ensuring the appropriate prefix and path components.
 ///
 /// If `is_cloudapi` is true the "cloudapi" path is appended, otherwise "api"
