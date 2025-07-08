@@ -1,6 +1,7 @@
 //! Rust implementation for the pyvcloud client. This crate mirrors the
 //! functionality provided by the deprecated Python SDK.
 
+pub mod types;
 pub mod utils;
 pub mod version;
 
