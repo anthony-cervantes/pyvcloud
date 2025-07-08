@@ -64,9 +64,34 @@ pub fn uri_to_api_uri(uri: &str) -> Option<String> {
     Some(parts[..4].join("/"))
 }
 
+/// Build network URI for the NSX proxy API from a gateway URL.
+///
+/// Returns `None` if the input doesn't resemble an edge gateway URL.
+pub fn build_network_url_from_gateway_url(gateway_href: &str) -> Option<String> {
+    const NETWORK_URL: &str = "/network/edges/";
+    const GATEWAY_API_URL: &str = "/api/edgeGateway/";
+    const GATEWAY_ADMIN_API_URL: &str = "/api/admin/edgeGateway/";
+
+    if gateway_href.contains(GATEWAY_API_URL) || gateway_href.contains(GATEWAY_ADMIN_API_URL) {
+        let mut url = gateway_href.replace(GATEWAY_API_URL, NETWORK_URL);
+        url = url.replace(GATEWAY_ADMIN_API_URL, NETWORK_URL);
+        Some(url)
+    } else {
+        None
+    }
+}
+
+/// Extract compute policy ID from its href.
+pub fn retrieve_compute_policy_id_from_href(href: &str) -> Option<String> {
+    href.rsplit('/').next().map(|s| s.to_string())
+}
+
 #[cfg(test)]
 mod tests {
-    use super::{cidr_to_netmask, extract_id, netmask_to_cidr_prefix_len, uri_to_api_uri};
+    use super::{
+        build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
+        netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, uri_to_api_uri,
+    };
 
     #[test]
     fn none_returns_none() {
@@ -102,5 +127,18 @@ mod tests {
     fn uri_to_api_base() {
         let uri = uri_to_api_uri("https://10.150.198.98/api/vdc/123").unwrap();
         assert_eq!(uri, "https://10.150.198.98/api");
+    }
+
+    #[test]
+    fn build_network_url_from_gateway() {
+        let url =
+            build_network_url_from_gateway_url("https://host/api/admin/edgeGateway/uuid").unwrap();
+        assert_eq!(url, "https://host/network/edges/uuid");
+    }
+
+    #[test]
+    fn compute_policy_id_from_href() {
+        let id = retrieve_compute_policy_id_from_href("https://x/policies/abc").unwrap();
+        assert_eq!(id, "abc");
     }
 }
