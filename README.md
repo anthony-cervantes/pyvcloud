@@ -31,7 +31,7 @@ Previous versions and deprecated code can be found in this repository under [tag
 
 This Python implementation of `pyvcloud` is deprecated. Development is moving toward a Rust-based library that follows SOLID and DRY principles.
 The new Rust crate lives under `pyvcloud-rs` and currently provides a small `Client` struct and helper utilities, such as `extract_id` for parsing URNs. It also defines an `ApiVersion` enum listing supported vCloud Director API versions.
-Additional networking helpers like `cidr_to_netmask` and `uri_to_api_uri` have been ported as part of the migration.
+Additional networking helpers like `cidr_to_netmask`, `uri_to_api_uri`, `build_network_url_from_gateway_url` and `retrieve_compute_policy_id_from_href` have been ported as part of the migration.
 See [RUST_MIGRATION_CHECKLIST.md](RUST_MIGRATION_CHECKLIST.md) for an overview of the migration plan and progress.
 
 ## Contributing
