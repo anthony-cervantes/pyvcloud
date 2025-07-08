@@ -2,6 +2,7 @@
 //! functionality provided by the deprecated Python SDK.
 
 pub mod utils;
+pub mod version;
 
 /// Prepare a base URI by ensuring the appropriate prefix and path components.
 ///
