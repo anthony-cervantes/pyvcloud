@@ -29,7 +29,9 @@ Previous versions and deprecated code can be found in this repository under [tag
 
 ## Migration to Rust
 
-This Python implementation of `pyvcloud` is deprecated. Development is moving toward a Rust-based library that follows SOLID and DRY principles. See [RUST_MIGRATION_CHECKLIST.md](RUST_MIGRATION_CHECKLIST.md) for an overview of the migration plan and progress.
+This Python implementation of `pyvcloud` is deprecated. Development is moving toward a Rust-based library that follows SOLID and DRY principles.  
+The new Rust crate lives under `pyvcloud-rs` and currently provides a small `Client` struct and helper utilities.  
+See [RUST_MIGRATION_CHECKLIST.md](RUST_MIGRATION_CHECKLIST.md) for an overview of the migration plan and progress.
 
 ## Contributing
 
