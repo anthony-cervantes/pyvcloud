@@ -3,6 +3,7 @@
 
 pub mod types;
 pub mod utils;
+pub mod vcd_api_version;
 pub mod version;
 
 /// Prepare a base URI by ensuring the appropriate prefix and path components.
