@@ -435,6 +435,299 @@ impl std::str::FromStr for NetworkAdapterType {
     }
 }
 
+/// Standard rel values used in vCloud Director links.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RelationType {
+    Add,
+    Alternate,
+    CheckCompliance,
+    Consolidate,
+    ControlAccess,
+    ConvertToAdvancedGateway,
+    CustomizeAtNextPowerOn,
+    Deploy,
+    Disable,
+    DisableGatewayDistributedRouting,
+    DiscardSuspendedState,
+    DiskAttach,
+    DiskDetach,
+    Down,
+    DownExtensibility,
+    DownloadDefault,
+    DownloadOvaDefault,
+    EdgeGateways,
+    Edit,
+    EjectMedia,
+    Enable,
+    EnableGatewayDistributedRouting,
+    EnterMaintenanceMode,
+    ExitMaintenanceMode,
+    GatewayRedeploy,
+    GatewaySyncSyslogSettings,
+    GatewaySysServerSettingIp,
+    GatewayUpdateProperties,
+    GuestCustomizationSection,
+    InsertMedia,
+    InstallVmwareTools,
+    LinkToTemplate,
+    Metrics,
+    MigrateVms,
+    ModifyFormFactor,
+    NextPage,
+    OpenApi,
+    OrgVdcNetworks,
+    PowerOff,
+    PowerOn,
+    PowerReboot,
+    PowerReset,
+    PowerShutdown,
+    PowerSuspend,
+    Publish,
+    Recompose,
+    ReconfigureVm,
+    ReloadFromVc,
+    Relocate,
+    Remove,
+    Repair,
+    Rights,
+    ResourcePoolVmList,
+    SnapshotCreate,
+    SnapshotRevertToCurrent,
+    SnapshotRemoveAll,
+    SyncSyslogSettings,
+    TaskCancel,
+    Undeploy,
+    UnlinkFromTemplate,
+    Unregister,
+    Up,
+    UpdateResourcePools,
+    Upgrade,
+    VdcRoutedConvertToDistributedInterface,
+    VdcRoutedConvertToSubInterface,
+    VdcRoutedConvertToInternalInterface,
+}
+
+impl std::fmt::Display for RelationType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            RelationType::Add => "add",
+            RelationType::Alternate => "alternate",
+            RelationType::CheckCompliance => "checkCompliance",
+            RelationType::Consolidate => "consolidate",
+            RelationType::ControlAccess => "controlAccess",
+            RelationType::ConvertToAdvancedGateway => "edgeGateway:convertToAdvancedGateway",
+            RelationType::CustomizeAtNextPowerOn => "customizeAtNextPowerOn",
+            RelationType::Deploy => "deploy",
+            RelationType::Disable => "disable",
+            RelationType::DisableGatewayDistributedRouting => {
+                "edgeGateway:disableDistributedRouting"
+            }
+            RelationType::DiscardSuspendedState => "discardState",
+            RelationType::DiskAttach => "disk:attach",
+            RelationType::DiskDetach => "disk:detach",
+            RelationType::Down => "down",
+            RelationType::DownExtensibility => "down:extensibility",
+            RelationType::DownloadDefault => "download:default",
+            RelationType::DownloadOvaDefault => "download:ovaDefault",
+            RelationType::EdgeGateways => "edgeGateways",
+            RelationType::Edit => "edit",
+            RelationType::EjectMedia => "media:ejectMedia",
+            RelationType::Enable => "enable",
+            RelationType::EnableGatewayDistributedRouting => "edgeGateway:enableDistributedRouting",
+            RelationType::EnterMaintenanceMode => "enterMaintenanceMode",
+            RelationType::ExitMaintenanceMode => "exitMaintenanceMode",
+            RelationType::GatewayRedeploy => "edgeGateway:redeploy",
+            RelationType::GatewaySyncSyslogSettings => "edgeGateway:syncSyslogSettings",
+            RelationType::GatewaySysServerSettingIp => "edgeGateway:configureSyslogServerSettings",
+            RelationType::GatewayUpdateProperties => "edgeGateway:updateProperties",
+            RelationType::GuestCustomizationSection => "guestCustomizationSection",
+            RelationType::InsertMedia => "media:insertMedia",
+            RelationType::InstallVmwareTools => "installVmwareTools",
+            RelationType::LinkToTemplate => "linkToTemplate",
+            RelationType::Metrics => "metrics",
+            RelationType::MigrateVms => "migrateVms",
+            RelationType::ModifyFormFactor => "edgeGateway:modifyFormFactor",
+            RelationType::NextPage => "nextPage",
+            RelationType::OpenApi => "openapi",
+            RelationType::OrgVdcNetworks => "orgVdcNetworks",
+            RelationType::PowerOff => "power:powerOff",
+            RelationType::PowerOn => "power:powerOn",
+            RelationType::PowerReboot => "power:reboot",
+            RelationType::PowerReset => "power:reset",
+            RelationType::PowerShutdown => "power:shutdown",
+            RelationType::PowerSuspend => "power:suspend",
+            RelationType::Publish => "publish",
+            RelationType::Recompose => "recompose",
+            RelationType::ReconfigureVm => "reconfigureVm",
+            RelationType::ReloadFromVc => "reloadFromVc",
+            RelationType::Relocate => "relocate",
+            RelationType::Remove => "remove",
+            RelationType::Repair => "repair",
+            RelationType::Rights => "rights",
+            RelationType::ResourcePoolVmList => "resourcePoolVmList",
+            RelationType::SnapshotCreate => "snapshot:create",
+            RelationType::SnapshotRevertToCurrent => "snapshot:revertToCurrent",
+            RelationType::SnapshotRemoveAll => "snapshot:removeAll",
+            RelationType::SyncSyslogSettings => "syncSyslogSettings",
+            RelationType::TaskCancel => "task:cancel",
+            RelationType::Undeploy => "undeploy",
+            RelationType::UnlinkFromTemplate => "unlinkFromTemplate",
+            RelationType::Unregister => "unregister",
+            RelationType::Up => "up",
+            RelationType::UpdateResourcePools => "update:resourcePools",
+            RelationType::Upgrade => "upgrade",
+            RelationType::VdcRoutedConvertToDistributedInterface => {
+                "orgVdcNetwork:convertToDistributedInterface"
+            }
+            RelationType::VdcRoutedConvertToSubInterface => "orgVdcNetwork:convertToSubInterface",
+            RelationType::VdcRoutedConvertToInternalInterface => {
+                "orgVdcNetwork:convertToInternalInterface"
+            }
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for RelationType {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "add" => Ok(RelationType::Add),
+            "alternate" => Ok(RelationType::Alternate),
+            "checkCompliance" => Ok(RelationType::CheckCompliance),
+            "consolidate" => Ok(RelationType::Consolidate),
+            "controlAccess" => Ok(RelationType::ControlAccess),
+            "edgeGateway:convertToAdvancedGateway" => Ok(RelationType::ConvertToAdvancedGateway),
+            "customizeAtNextPowerOn" => Ok(RelationType::CustomizeAtNextPowerOn),
+            "deploy" => Ok(RelationType::Deploy),
+            "disable" => Ok(RelationType::Disable),
+            "edgeGateway:disableDistributedRouting" => {
+                Ok(RelationType::DisableGatewayDistributedRouting)
+            }
+            "discardState" => Ok(RelationType::DiscardSuspendedState),
+            "disk:attach" => Ok(RelationType::DiskAttach),
+            "disk:detach" => Ok(RelationType::DiskDetach),
+            "down" => Ok(RelationType::Down),
+            "down:extensibility" => Ok(RelationType::DownExtensibility),
+            "download:default" => Ok(RelationType::DownloadDefault),
+            "download:ovaDefault" => Ok(RelationType::DownloadOvaDefault),
+            "edgeGateways" => Ok(RelationType::EdgeGateways),
+            "edit" => Ok(RelationType::Edit),
+            "media:ejectMedia" => Ok(RelationType::EjectMedia),
+            "enable" => Ok(RelationType::Enable),
+            "edgeGateway:enableDistributedRouting" => {
+                Ok(RelationType::EnableGatewayDistributedRouting)
+            }
+            "enterMaintenanceMode" => Ok(RelationType::EnterMaintenanceMode),
+            "exitMaintenanceMode" => Ok(RelationType::ExitMaintenanceMode),
+            "edgeGateway:redeploy" => Ok(RelationType::GatewayRedeploy),
+            "edgeGateway:syncSyslogSettings" => Ok(RelationType::GatewaySyncSyslogSettings),
+            "edgeGateway:configureSyslogServerSettings" => {
+                Ok(RelationType::GatewaySysServerSettingIp)
+            }
+            "edgeGateway:updateProperties" => Ok(RelationType::GatewayUpdateProperties),
+            "guestCustomizationSection" => Ok(RelationType::GuestCustomizationSection),
+            "media:insertMedia" => Ok(RelationType::InsertMedia),
+            "installVmwareTools" => Ok(RelationType::InstallVmwareTools),
+            "linkToTemplate" => Ok(RelationType::LinkToTemplate),
+            "metrics" => Ok(RelationType::Metrics),
+            "migrateVms" => Ok(RelationType::MigrateVms),
+            "edgeGateway:modifyFormFactor" => Ok(RelationType::ModifyFormFactor),
+            "nextPage" => Ok(RelationType::NextPage),
+            "openapi" => Ok(RelationType::OpenApi),
+            "orgVdcNetworks" => Ok(RelationType::OrgVdcNetworks),
+            "power:powerOff" => Ok(RelationType::PowerOff),
+            "power:powerOn" => Ok(RelationType::PowerOn),
+            "power:reboot" => Ok(RelationType::PowerReboot),
+            "power:reset" => Ok(RelationType::PowerReset),
+            "power:shutdown" => Ok(RelationType::PowerShutdown),
+            "power:suspend" => Ok(RelationType::PowerSuspend),
+            "publish" => Ok(RelationType::Publish),
+            "recompose" => Ok(RelationType::Recompose),
+            "reconfigureVm" => Ok(RelationType::ReconfigureVm),
+            "reloadFromVc" => Ok(RelationType::ReloadFromVc),
+            "relocate" => Ok(RelationType::Relocate),
+            "remove" => Ok(RelationType::Remove),
+            "repair" => Ok(RelationType::Repair),
+            "rights" => Ok(RelationType::Rights),
+            "resourcePoolVmList" => Ok(RelationType::ResourcePoolVmList),
+            "snapshot:create" => Ok(RelationType::SnapshotCreate),
+            "snapshot:revertToCurrent" => Ok(RelationType::SnapshotRevertToCurrent),
+            "snapshot:removeAll" => Ok(RelationType::SnapshotRemoveAll),
+            "syncSyslogSettings" => Ok(RelationType::SyncSyslogSettings),
+            "task:cancel" => Ok(RelationType::TaskCancel),
+            "undeploy" => Ok(RelationType::Undeploy),
+            "unlinkFromTemplate" => Ok(RelationType::UnlinkFromTemplate),
+            "unregister" => Ok(RelationType::Unregister),
+            "up" => Ok(RelationType::Up),
+            "update:resourcePools" => Ok(RelationType::UpdateResourcePools),
+            "upgrade" => Ok(RelationType::Upgrade),
+            "orgVdcNetwork:convertToDistributedInterface" => {
+                Ok(RelationType::VdcRoutedConvertToDistributedInterface)
+            }
+            "orgVdcNetwork:convertToSubInterface" => {
+                Ok(RelationType::VdcRoutedConvertToSubInterface)
+            }
+            "orgVdcNetwork:convertToInternalInterface" => {
+                Ok(RelationType::VdcRoutedConvertToInternalInterface)
+            }
+            _ => Err(()),
+        }
+    }
+}
+
+/// Formats for query results.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum QueryResultFormat {
+    Records,
+    IdRecords,
+    References,
+}
+
+impl QueryResultFormat {
+    pub fn content_type(&self) -> &'static str {
+        match self {
+            QueryResultFormat::Records => "application/vnd.vmware.vcloud.query.records+xml",
+            QueryResultFormat::IdRecords => "application/vnd.vmware.vcloud.query.idrecords+xml",
+            QueryResultFormat::References => "application/vnd.vmware.vcloud.query.references+xml",
+        }
+    }
+
+    pub fn alias(&self) -> &'static str {
+        match self {
+            QueryResultFormat::Records => "records",
+            QueryResultFormat::IdRecords => "idrecords",
+            QueryResultFormat::References => "references",
+        }
+    }
+}
+
+impl std::fmt::Display for QueryResultFormat {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(self.alias())
+    }
+}
+
+impl std::str::FromStr for QueryResultFormat {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "records" | "application/vnd.vmware.vcloud.query.records+xml" => {
+                Ok(QueryResultFormat::Records)
+            }
+            "idrecords" | "application/vnd.vmware.vcloud.query.idrecords+xml" => {
+                Ok(QueryResultFormat::IdRecords)
+            }
+            "references" | "application/vnd.vmware.vcloud.query.references+xml" => {
+                Ok(QueryResultFormat::References)
+            }
+            _ => Err(()),
+        }
+    }
+}
+
 /// Return the vCloud status message for a given status code.
 pub fn vcloud_status_message(status: i32) -> Option<&'static str> {
     match status {
@@ -534,5 +827,22 @@ mod tests {
         let t: NetworkAdapterType = "VMXNET3".parse().unwrap();
         assert_eq!(t, NetworkAdapterType::Vmxnet3);
         assert_eq!(t.to_string(), "VMXNET3");
+    }
+
+    #[test]
+    fn parse_relation_type() {
+        let r: RelationType = "power:powerOff".parse().unwrap();
+        assert_eq!(r, RelationType::PowerOff);
+        assert_eq!(r.to_string(), "power:powerOff");
+    }
+
+    #[test]
+    fn parse_query_result_format() {
+        let f: QueryResultFormat = "idrecords".parse().unwrap();
+        assert_eq!(f, QueryResultFormat::IdRecords);
+        assert_eq!(
+            f.content_type(),
+            "application/vnd.vmware.vcloud.query.idrecords+xml"
+        );
     }
 }
