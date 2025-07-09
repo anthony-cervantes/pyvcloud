@@ -33,7 +33,10 @@ Previous versions and deprecated code can be found in this repository under [tag
 
 This Python implementation of `pyvcloud` is deprecated. Development is moving toward a Rust-based library that follows SOLID and DRY principles.
 A small Rust crate lives under `pyvcloud-rs` providing a `Client` struct and helper utilities. Examples include `extract_id` for parsing URNs, `to_human` for formatting durations and `adapter_type_to_name` for displaying VM adapter types. The crate also defines an `ApiVersion` enum listing supported vCloud Director API versions. Additional enums such as `MetadataDomain`, `MetadataVisibility`, `TaskStatus`, `VAppPowerStatus`, `FenceMode`, `LogicalNetworkLinkType`, `NetworkAdapterType`, `RelationType`, `ResourceType`, `EntityType`, `WellKnownEndpoint` and `QueryResultFormat` model common vCD concepts.
-A struct `VcdApiVersion` provides comparison logic for pre-release API versions matching the behavior of the old Python SDK.
+A struct `VcdApiVersion` provides comparison logic for pre-release API versions
+matching the behavior of the old Python SDK. A helper
+`vcd_api_current_versions` returns the list of supported `VcdApiVersion`
+objects.
 Networking helpers like `cidr_to_netmask`, `uri_to_api_uri`, `build_network_url_from_gateway_url` and `retrieve_compute_policy_id_from_href` have also been ported as part of the migration.
 A `compute_policy` module offers constants such as `VDC_COMPUTE_POLICY_MIN_API_VERSION` and a helper `generate_compute_policy_tags` for constructing compute policy XML snippets.
 A `network_constants` module exposes REST endpoint templates such as `FIREWALL_URL_TEMPLATE` for constructing URLs programmatically.

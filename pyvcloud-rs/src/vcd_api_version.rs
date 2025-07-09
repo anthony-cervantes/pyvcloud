@@ -112,6 +112,22 @@ impl Ord for VcdApiVersion {
     }
 }
 
+/// Return a list of `VcdApiVersion` objects representing the currently
+/// supported API versions.
+pub fn vcd_api_current_versions() -> Vec<VcdApiVersion> {
+    vec![
+        "29.0".parse().unwrap(),
+        "30.0".parse().unwrap(),
+        "31.0".parse().unwrap(),
+        "32.0".parse().unwrap(),
+        "33.0".parse().unwrap(),
+        "34.0".parse().unwrap(),
+        "35.0".parse().unwrap(),
+        "36.0".parse().unwrap(),
+        "37.0.0-alpha".parse().unwrap(),
+    ]
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -135,5 +151,12 @@ mod tests {
         let a: VcdApiVersion = "36.0".parse().unwrap();
         let b: VcdApiVersion = "37.0.0-alpha".parse().unwrap();
         assert!(a < b);
+    }
+
+    #[test]
+    fn list_current_versions() {
+        let versions = vcd_api_current_versions();
+        assert_eq!(versions.len(), 9);
+        assert_eq!(versions[0].to_string(), "29.0");
     }
 }
