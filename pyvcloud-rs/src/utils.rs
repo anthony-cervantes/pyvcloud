@@ -86,11 +86,34 @@ pub fn retrieve_compute_policy_id_from_href(href: &str) -> Option<String> {
     href.rsplit('/').next().map(|s| s.to_string())
 }
 
+/// Convert a duration in seconds to a human readable weeks, days and hours
+/// string in the form `"<weeks>w, <days>d, <hours>h"`.
+pub fn to_human(seconds: u64) -> String {
+    let weeks = seconds / (7 * 24 * 60 * 60);
+    let days = seconds / (24 * 60 * 60) - 7 * weeks;
+    let hours = seconds / (60 * 60) - 7 * 24 * weeks - 24 * days;
+    format!("{}w, {}d, {}h", weeks, days, hours)
+}
+
+/// Map an adapter type number to a display string. Unknown numbers return a
+/// placeholder message.
+pub fn adapter_type_to_name(adapter_type: &str) -> String {
+    match adapter_type {
+        "1" => "IDE".to_string(),
+        "2" => "BusLogic Parallel (SCSI)".to_string(),
+        "3" => "LSI Logic Parallel (SCSI)".to_string(),
+        "4" => "LSI Logic SAS (SCSI)".to_string(),
+        "5" => "Paravirtual (SCSI)".to_string(),
+        "6" => "SATA".to_string(),
+        _ => format!("Adapter Type {}undefined", adapter_type),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{
-        build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
-        netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, uri_to_api_uri,
+        adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
+        netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, to_human, uri_to_api_uri,
     };
 
     #[test]
@@ -140,5 +163,17 @@ mod tests {
     fn compute_policy_id_from_href() {
         let id = retrieve_compute_policy_id_from_href("https://x/policies/abc").unwrap();
         assert_eq!(id, "abc");
+    }
+
+    #[test]
+    fn seconds_to_human_readable() {
+        assert_eq!(to_human(10_800), "0w, 0d, 3h");
+        assert_eq!(to_human(900_000), "1w, 3d, 10h");
+    }
+
+    #[test]
+    fn adapter_type_lookup() {
+        assert_eq!(adapter_type_to_name("3"), "LSI Logic Parallel (SCSI)".to_string());
+        assert_eq!(adapter_type_to_name("9"), "Adapter Type 9undefined".to_string());
     }
 }
