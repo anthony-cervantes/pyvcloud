@@ -327,6 +327,114 @@ impl std::str::FromStr for VAppPowerStatus {
     }
 }
 
+/// Supported network fence modes for vApp networks.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FenceMode {
+    Isolated,
+    Direct,
+    Bridged,
+    NatRouted,
+}
+
+impl std::fmt::Display for FenceMode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            FenceMode::Isolated => "isolated",
+            FenceMode::Direct => "direct",
+            FenceMode::Bridged => "bridged",
+            FenceMode::NatRouted => "natRouted",
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for FenceMode {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "isolated" => Ok(FenceMode::Isolated),
+            "direct" => Ok(FenceMode::Direct),
+            "bridged" => Ok(FenceMode::Bridged),
+            "natRouted" => Ok(FenceMode::NatRouted),
+            _ => Err(()),
+        }
+    }
+}
+
+/// Types of logical network links.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum LogicalNetworkLinkType {
+    Bridged,
+    Independent,
+    DlrUplink,
+}
+
+impl std::fmt::Display for LogicalNetworkLinkType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            LogicalNetworkLinkType::Bridged => "0",
+            LogicalNetworkLinkType::Independent => "1",
+            LogicalNetworkLinkType::DlrUplink => "2",
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for LogicalNetworkLinkType {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "0" => Ok(LogicalNetworkLinkType::Bridged),
+            "1" => Ok(LogicalNetworkLinkType::Independent),
+            "2" => Ok(LogicalNetworkLinkType::DlrUplink),
+            _ => Err(()),
+        }
+    }
+}
+
+/// Virtual network adapter models.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum NetworkAdapterType {
+    Vmxnet,
+    Vmxnet2,
+    Vmxnet3,
+    E1000,
+    E1000e,
+    Vlance,
+}
+
+impl std::fmt::Display for NetworkAdapterType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            NetworkAdapterType::Vmxnet => "VMXNET",
+            NetworkAdapterType::Vmxnet2 => "VMXNET2",
+            NetworkAdapterType::Vmxnet3 => "VMXNET3",
+            NetworkAdapterType::E1000 => "E1000",
+            NetworkAdapterType::E1000e => "E1000E",
+            NetworkAdapterType::Vlance => "PCNet32",
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for NetworkAdapterType {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "VMXNET" => Ok(NetworkAdapterType::Vmxnet),
+            "VMXNET2" => Ok(NetworkAdapterType::Vmxnet2),
+            "VMXNET3" => Ok(NetworkAdapterType::Vmxnet3),
+            "E1000" => Ok(NetworkAdapterType::E1000),
+            "E1000E" => Ok(NetworkAdapterType::E1000e),
+            "PCNet32" => Ok(NetworkAdapterType::Vlance),
+            _ => Err(()),
+        }
+    }
+}
+
 /// Return the vCloud status message for a given status code.
 pub fn vcloud_status_message(status: i32) -> Option<&'static str> {
     match status {
@@ -405,5 +513,26 @@ mod tests {
         let p: VAppPowerStatus = "4".parse().unwrap();
         assert_eq!(p, VAppPowerStatus::Running);
         assert_eq!(p.to_string(), "4");
+    }
+
+    #[test]
+    fn parse_fence_mode() {
+        let f: FenceMode = "bridged".parse().unwrap();
+        assert_eq!(f, FenceMode::Bridged);
+        assert_eq!(f.to_string(), "bridged");
+    }
+
+    #[test]
+    fn parse_logical_network_link_type() {
+        let t: LogicalNetworkLinkType = "1".parse().unwrap();
+        assert_eq!(t, LogicalNetworkLinkType::Independent);
+        assert_eq!(t.to_string(), "1");
+    }
+
+    #[test]
+    fn parse_network_adapter_type() {
+        let t: NetworkAdapterType = "VMXNET3".parse().unwrap();
+        assert_eq!(t, NetworkAdapterType::Vmxnet3);
+        assert_eq!(t.to_string(), "VMXNET3");
     }
 }
