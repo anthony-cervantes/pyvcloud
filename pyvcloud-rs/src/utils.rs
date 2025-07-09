@@ -112,7 +112,6 @@ pub fn adapter_type_to_name(adapter_type: &str) -> String {
     }
 }
 
-
 /// Normalize a path by removing `.` and `..` components without touching the
 /// filesystem.
 fn normalize_path<P: AsRef<Path>>(path: P) -> PathBuf {
@@ -231,9 +230,9 @@ pub fn get_admin_extension_href(href: &str) -> String {
 mod tests {
     use super::{
         adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
-        bad_link, bad_path, get_admin_extension_href, get_admin_href, get_non_admin_href,
-        get_safe_members_in_tar_file, is_admin, netmask_to_cidr_prefix_len,
-        retrieve_compute_policy_id_from_href, to_human, uri_to_api_uri,
+        get_admin_extension_href, get_admin_href, get_non_admin_href, get_safe_members_in_tar_file,
+        is_admin, netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, to_human,
+        uri_to_api_uri,
     };
 
     #[test]
@@ -348,7 +347,7 @@ mod tests {
     #[test]
     fn safe_members_filters_illegal_paths() {
         use std::io::Cursor;
-        use tar::{Archive, Builder, Header, EntryType};
+        use tar::{Archive, Builder, EntryType, Header};
 
         let mut data = Vec::new();
         {
