@@ -112,6 +112,44 @@ pub fn adapter_type_to_name(adapter_type: &str) -> String {
     }
 }
 
+/// Return a slice of attribute names relevant for the given resource type.
+pub fn filter_attributes(
+    resource_type: crate::types::ResourceType,
+) -> Option<&'static [&'static str]> {
+    use crate::types::ResourceType::*;
+    const TASK_ATTRS: &[&str] = &["id", "name", "objectName", "status", "startDate"];
+    const VAPP_ATTRS: &[&str] = &[
+        "id",
+        "name",
+        "numberOfVMs",
+        "status",
+        "numberOfCpus",
+        "memoryAllocationMB",
+        "storageKB",
+        "ownerName",
+        "isDeployed",
+        "isEnabled",
+        "vdcName",
+    ];
+    const CATALOG_ITEM_ATTRS: &[&str] = &[
+        "id",
+        "name",
+        "catalogName",
+        "storageKB",
+        "status",
+        "entityType",
+        "vdcName",
+        "isPublished",
+        "ownerName",
+    ];
+    match resource_type {
+        AdminTask | Task => Some(TASK_ATTRS),
+        AdminVapp | Vapp => Some(VAPP_ATTRS),
+        AdminCatalogItem | CatalogItem => Some(CATALOG_ITEM_ATTRS),
+        _ => None,
+    }
+}
+
 /// Return the canonical name from `names` matching `name` case-insensitively.
 ///
 /// If no match is found `name` is returned as-is.
@@ -267,8 +305,8 @@ pub fn get_admin_extension_href(href: &str) -> String {
 mod tests {
     use super::{
         adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
-        format_xml, get_admin_extension_href, get_admin_href, get_non_admin_href,
-        get_safe_members_in_tar_file, is_admin, netmask_to_cidr_prefix_len,
+        filter_attributes, format_xml, get_admin_extension_href, get_admin_href,
+        get_non_admin_href, get_safe_members_in_tar_file, is_admin, netmask_to_cidr_prefix_len,
         retrieve_compute_policy_id_from_href, to_camel_case, to_human, uri_to_api_uri,
     };
 
@@ -433,5 +471,18 @@ mod tests {
     fn format_xml_color_changes_output() {
         let xml = "<foo></foo>";
         assert_ne!(format_xml(xml, true), xml);
+    }
+
+    #[test]
+    fn filter_attributes_task() {
+        use crate::types::ResourceType;
+        let attrs = filter_attributes(ResourceType::Task).unwrap();
+        assert_eq!(attrs, ["id", "name", "objectName", "status", "startDate"]);
+    }
+
+    #[test]
+    fn filter_attributes_none() {
+        use crate::types::ResourceType;
+        assert!(filter_attributes(ResourceType::EdgeGateway).is_none());
     }
 }
