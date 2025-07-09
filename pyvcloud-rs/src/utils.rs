@@ -109,10 +109,57 @@ pub fn adapter_type_to_name(adapter_type: &str) -> String {
     }
 }
 
+/// Return an admin version of the given vCD URL.
+///
+/// If the input already points to the admin or admin extension endpoint it is
+/// returned unchanged. Otherwise `/api/` is replaced with `/api/admin/`.
+pub fn get_admin_href(href: &str) -> String {
+    if href.contains("/api/admin/extension/") {
+        href.replace("/api/admin/extension", "/api/admin/")
+    } else if href.contains("/api/admin/") {
+        href.to_string()
+    } else {
+        href.replace("/api/", "/api/admin/")
+    }
+}
+
+/// Return a non-admin version of the given vCD URL.
+///
+/// Admin and admin extension paths are converted back to their non-admin form.
+pub fn get_non_admin_href(href: &str) -> String {
+    if href.contains("/api/admin/extension/") {
+        href.replace("/api/admin/extension", "/api/")
+    } else if href.contains("/api/admin/") {
+        href.replace("/api/admin/", "/api/")
+    } else {
+        href.to_string()
+    }
+}
+
+/// Determine if the URL refers to an admin endpoint.
+pub fn is_admin(href: &str) -> bool {
+    href.contains("/api/admin/") && !href.contains("/api/admin/extension/")
+}
+
+/// Return the sys admin extension version of the given vCD URL.
+///
+/// If the input already references the admin extension endpoint it is returned
+/// unchanged.
+pub fn get_admin_extension_href(href: &str) -> String {
+    if href.contains("/api/admin/extension/") {
+        href.to_string()
+    } else if href.contains("/api/admin/") {
+        href.replace("/api/admin/", "/api/admin/extension/")
+    } else {
+        href.replace("/api/", "/api/admin/extension/")
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{
         adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
+        get_admin_extension_href, get_admin_href, get_non_admin_href, is_admin,
         netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, to_human, uri_to_api_uri,
     };
 
@@ -173,7 +220,55 @@ mod tests {
 
     #[test]
     fn adapter_type_lookup() {
-        assert_eq!(adapter_type_to_name("3"), "LSI Logic Parallel (SCSI)".to_string());
-        assert_eq!(adapter_type_to_name("9"), "Adapter Type 9undefined".to_string());
+        assert_eq!(
+            adapter_type_to_name("3"),
+            "LSI Logic Parallel (SCSI)".to_string()
+        );
+        assert_eq!(
+            adapter_type_to_name("9"),
+            "Adapter Type 9undefined".to_string()
+        );
+    }
+
+    #[test]
+    fn admin_href_conversion() {
+        assert_eq!(
+            get_admin_href("https://host/api/vdc/1"),
+            "https://host/api/admin/vdc/1"
+        );
+        assert_eq!(
+            get_admin_href("https://host/api/admin/vdc/1"),
+            "https://host/api/admin/vdc/1"
+        );
+    }
+
+    #[test]
+    fn non_admin_href_conversion() {
+        assert_eq!(
+            get_non_admin_href("https://host/api/admin/vdc/1"),
+            "https://host/api/vdc/1"
+        );
+        assert_eq!(
+            get_non_admin_href("https://host/api/vdc/1"),
+            "https://host/api/vdc/1"
+        );
+    }
+
+    #[test]
+    fn admin_detection() {
+        assert!(is_admin("https://host/api/admin/vdc/1"));
+        assert!(!is_admin("https://host/api/vdc/1"));
+    }
+
+    #[test]
+    fn admin_extension_href_conversion() {
+        assert_eq!(
+            get_admin_extension_href("https://host/api/admin/vdc/1"),
+            "https://host/api/admin/extension/vdc/1"
+        );
+        assert_eq!(
+            get_admin_extension_href("https://host/api/admin/extension/vdc/1"),
+            "https://host/api/admin/extension/vdc/1"
+        );
     }
 }
