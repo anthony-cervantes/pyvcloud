@@ -469,50 +469,82 @@ impl EntityType {
             EntityType::AdminCatalog => "application/vnd.vmware.admin.catalog+xml",
             EntityType::AdminOrg => "application/vnd.vmware.admin.organization+xml",
             EntityType::AdminService => "application/vnd.vmware.admin.service+xml",
-            EntityType::AllocatedNetworkAddress => "application/vnd.vmware.vcloud.allocatedNetworkAddress+xml",
+            EntityType::AllocatedNetworkAddress => {
+                "application/vnd.vmware.vcloud.allocatedNetworkAddress+xml"
+            }
             EntityType::AmqpSettings => "application/vnd.vmware.admin.amqpSettings+xml",
             EntityType::ApiExtensibility => "application/vnd.vmware.vcloud.apiextensibility+xml",
             EntityType::ApiFilter => "application/vnd.vmware.admin.apiFilter+xml",
             EntityType::ApplicationBinary => "application/binary",
             EntityType::Catalog => "application/vnd.vmware.vcloud.catalog+xml",
             EntityType::CaptureVappParams => "application/vnd.vmware.vcloud.captureVAppParams+xml",
-            EntityType::CheckPostGuestCustomizationSection => "application/vnd.vmware.vcloud.vm.' 'checkPostGuestCustomizationSection+xml",
+            EntityType::CheckPostGuestCustomizationSection => {
+                "application/vnd.vmware.vcloud.vm.' 'checkPostGuestCustomizationSection+xml"
+            }
             EntityType::CloneVappParams => "application/vnd.vmware.vcloud.cloneVAppParams+xml",
             EntityType::ComposeVappParams => "application/vnd.vmware.vcloud.composeVAppParams+xml",
             EntityType::ComplianceResult => "application/vnd.vmware.vm.complianceResult+xml",
             EntityType::ControlAccessParams => "application/vnd.vmware.vcloud.controlAccess+xml",
-            EntityType::CurrentUsage => "application/vnd.vmware.vcloud.metrics.currentUsageSpec+xml",
+            EntityType::CurrentUsage => {
+                "application/vnd.vmware.vcloud.metrics.currentUsageSpec+xml"
+            }
             EntityType::DatastoreReferences => "application/vnd.vmware.admin.datastoreList+xml",
             EntityType::DefaultContentType => "application/*+xml",
             EntityType::Deploy => "application/vnd.vmware.vcloud.deployVAppParams+xml",
             EntityType::Disk => "application/vnd.vmware.vcloud.disk+xml",
-            EntityType::DiskAttachDetachParams => "application/vnd.vmware.vcloud.diskAttachOrDetachParams+xml",
+            EntityType::DiskAttachDetachParams => {
+                "application/vnd.vmware.vcloud.diskAttachOrDetachParams+xml"
+            }
             EntityType::DiskCreateParms => "application/vnd.vmware.vcloud.diskCreateParams+xml",
             EntityType::EdgeGateway => "application/vnd.vmware.admin.edgeGateway+xml",
-            EntityType::EdgeGatewayFormFactor => "application/vnd.vmware.vcloud.edgeGatewayFormFactor+xml",
-            EntityType::EdgeGatewayServiceConfiguration => "application/vnd.vmware.admin.edgeGatewayServiceConfiguration+xml",
-            EntityType::EdgeGatewaySysLogServerIp => "application/vnd.vmware.vcloud.SyslogSettings+xml",
+            EntityType::EdgeGatewayFormFactor => {
+                "application/vnd.vmware.vcloud.edgeGatewayFormFactor+xml"
+            }
+            EntityType::EdgeGatewayServiceConfiguration => {
+                "application/vnd.vmware.admin.edgeGatewayServiceConfiguration+xml"
+            }
+            EntityType::EdgeGatewaySysLogServerIp => {
+                "application/vnd.vmware.vcloud.SyslogSettings+xml"
+            }
             EntityType::Extension => "application/vnd.vmware.admin.vmwExtension+xml",
             EntityType::ExtensionServices => "application/vnd.vmware.admin.extensionServices+xml",
             EntityType::ExternalNetwork => "application/vnd.vmware.admin.vmwexternalnet+xml",
-            EntityType::ExternalNetworkRefs => "application/vnd.vmware.admin.vmwExternalNetworkReferences+xml",
-            EntityType::GuestCustomizationSection => "application/vnd.vmware.vcloud.guestCustomizationSection+xml",
-            EntityType::HistoricUsage => "application/vnd.vmware.vcloud.metrics.historicUsageSpec+xml",
+            EntityType::ExternalNetworkRefs => {
+                "application/vnd.vmware.admin.vmwExternalNetworkReferences+xml"
+            }
+            EntityType::GuestCustomizationSection => {
+                "application/vnd.vmware.vcloud.guestCustomizationSection+xml"
+            }
+            EntityType::HistoricUsage => {
+                "application/vnd.vmware.vcloud.metrics.historicUsageSpec+xml"
+            }
             EntityType::Host => "application/vnd.vmware.admin.host+xml",
             EntityType::HostRefs => "application/vnd.vmware.admin.vmwHostReferences+xml",
-            EntityType::InstantiateVappTemplateParams => "application/vnd.vmware.vcloud.instantiateVAppTemplateParams+xml",
+            EntityType::InstantiateVappTemplateParams => {
+                "application/vnd.vmware.vcloud.instantiateVAppTemplateParams+xml"
+            }
             EntityType::Json => "application/json",
             EntityType::LeaseSettings => "application/vnd.vmware.vcloud.leaseSettingsSection+xml",
             EntityType::Media => "application/vnd.vmware.vcloud.media+xml",
-            EntityType::MediaInsertOrEjectParams => "application/vnd.vmware.vcloud.mediaInsertOrEjectParams+xml",
+            EntityType::MediaInsertOrEjectParams => {
+                "application/vnd.vmware.vcloud.mediaInsertOrEjectParams+xml"
+            }
             EntityType::Metadata => "application/vnd.vmware.vcloud.metadata+xml",
             EntityType::MetadataValue => "application/vnd.vmware.vcloud.metadata.value+xml",
-            EntityType::NetworkConfigSection => "application/vnd.vmware.vcloud.networkConfigSection+xml",
-            EntityType::NetworkConnectionSection => "application/vnd.vmware.vcloud.networkConnectionSection+xml",
+            EntityType::NetworkConfigSection => {
+                "application/vnd.vmware.vcloud.networkConfigSection+xml"
+            }
+            EntityType::NetworkConnectionSection => {
+                "application/vnd.vmware.vcloud.networkConnectionSection+xml"
+            }
             EntityType::NetworkManagers => "application/vnd.vmware.admin.networkManagers+xml",
-            EntityType::NetworkPoolReferences => "application/vnd.vmware.admin.vmwNetworkPoolReferences+xml",
+            EntityType::NetworkPoolReferences => {
+                "application/vnd.vmware.admin.vmwNetworkPoolReferences+xml"
+            }
             EntityType::NsxtManager => "application/vnd.vmware.admin.nsxTmanager+xml",
-            EntityType::OperatingSystemSection => "application/vnd.vmware.vcloud.operatingSystemSection+xml",
+            EntityType::OperatingSystemSection => {
+                "application/vnd.vmware.vcloud.operatingSystemSection+xml"
+            }
             EntityType::Org => "application/vnd.vmware.vcloud.org+xml",
             EntityType::OrgNetwork => "application/vnd.vmware.vcloud.orgNetwork+xml",
             EntityType::OrgList => "application/vnd.vmware.vcloud.orgList+xml",
@@ -521,17 +553,27 @@ impl EntityType {
             EntityType::Owner => "application/vnd.vmware.vcloud.owner+xml",
             EntityType::ProductSections => "application/vnd.vmware.vcloud.productSections+xml",
             EntityType::ProviderVdc => "application/vnd.vmware.admin.providervdc+xml",
-            EntityType::ProviderVdcParams => "application/vnd.vmware.admin.createProviderVdcParams+xml",
-            EntityType::PublishCatalogParams => "application/vnd.vmware.admin.publishCatalogParams+xml",
+            EntityType::ProviderVdcParams => {
+                "application/vnd.vmware.admin.createProviderVdcParams+xml"
+            }
+            EntityType::PublishCatalogParams => {
+                "application/vnd.vmware.admin.publishCatalogParams+xml"
+            }
             EntityType::QueryList => "application/vnd.vmware.vcloud.query.queryList+xml",
             EntityType::RasdItem => "application/vnd.vmware.vcloud.rasdItem+xml",
             EntityType::RasdItemsList => "application/vnd.vmware.vcloud.rasdItemsList+xml",
-            EntityType::RecomposeVappParams => "application/vnd.vmware.vcloud.recomposeVAppParams+xml",
+            EntityType::RecomposeVappParams => {
+                "application/vnd.vmware.vcloud.recomposeVAppParams+xml"
+            }
             EntityType::Records => "application/vnd.vmware.vcloud.query.records+xml",
-            EntityType::RegisterVcServerParams => "application/vnd.vmware.admin.registerVimServerParams+xml",
+            EntityType::RegisterVcServerParams => {
+                "application/vnd.vmware.admin.registerVimServerParams+xml"
+            }
             EntityType::RelocateParams => "application/vnd.vmware.vcloud.relocateVmParams+xml",
             EntityType::ResourcePoolList => "application/vnd.vmware.admin.resourcePoolList+xml",
-            EntityType::ResPoolSetUpdateParams => "application/vnd.vmware.admin.resourcePoolSetUpdateParams+xml",
+            EntityType::ResPoolSetUpdateParams => {
+                "application/vnd.vmware.admin.resourcePoolSetUpdateParams+xml"
+            }
             EntityType::Role => "application/vnd.vmware.admin.role+xml",
             EntityType::Right => "application/vnd.vmware.admin.right+xml",
             EntityType::Rights => "application/vnd.vmware.admin.rights+xml",
@@ -542,30 +584,48 @@ impl EntityType {
             EntityType::TasksList => "application/vnd.vmware.vcloud.tasksList+xml",
             EntityType::TextXml => "text/xml",
             EntityType::Undeploy => "application/vnd.vmware.vcloud.undeployVAppParams+xml",
-            EntityType::UpdateProviderVdcStorageProfiles => "application/vnd.vmware.admin.updateProviderVdcStorageProfiles+xml",
-            EntityType::UpdateVdcStorageProfiles => "application/vnd.vmware.admin.updateVdcStorageProfiles+xml",
-            EntityType::UploadVappTemplateParams => "application/vnd.vmware.vcloud.uploadVAppTemplateParams+xml",
+            EntityType::UpdateProviderVdcStorageProfiles => {
+                "application/vnd.vmware.admin.updateProviderVdcStorageProfiles+xml"
+            }
+            EntityType::UpdateVdcStorageProfiles => {
+                "application/vnd.vmware.admin.updateVdcStorageProfiles+xml"
+            }
+            EntityType::UploadVappTemplateParams => {
+                "application/vnd.vmware.vcloud.uploadVAppTemplateParams+xml"
+            }
             EntityType::User => "application/vnd.vmware.admin.user+xml",
             EntityType::Vapp => "application/vnd.vmware.vcloud.vApp+xml",
             EntityType::VappTemplate => "application/vnd.vmware.vcloud.vAppTemplate+xml",
             EntityType::Vdc => "application/vnd.vmware.vcloud.vdc+xml",
             EntityType::VdcAdmin => "application/vnd.vmware.admin.vdc+xml",
-            EntityType::VdcComputePolicyReferences => "application/vnd.vmware.vcloud.vdcComputePolicyReferences+xml",
+            EntityType::VdcComputePolicyReferences => {
+                "application/vnd.vmware.vcloud.vdcComputePolicyReferences+xml"
+            }
             EntityType::VdcReferences => "application/vnd.vmware.admin.vdcReferences+xml",
             EntityType::VdcStorageProfile => "application/vnd.vmware.vcloud.vdcStorageProfile+xml",
-            EntityType::VdcStorageProfileAdmin => "application/vnd.vmware.admin.vdcStorageProfile+xml",
+            EntityType::VdcStorageProfileAdmin => {
+                "application/vnd.vmware.admin.vdcStorageProfile+xml"
+            }
             EntityType::VdcsParams => "application/vnd.vmware.admin.createVdcParams+xml",
             EntityType::VimServerRefs => "application/vnd.vmware.admin.vmwVimServerReferences+xml",
             EntityType::VirtualCenter => "application/vnd.vmware.admin.vmwvirtualcenter+xml",
             EntityType::Vm => "application/vnd.vmware.vcloud.vm+xml",
             EntityType::VmBootOptions => "application/vnd.vmware.vcloud.bootOptionsSection+xml",
-            EntityType::VmCapabilitiesSection => "application/vnd.vmware.vcloud.vmCapabilitiesSection+xml",
+            EntityType::VmCapabilitiesSection => {
+                "application/vnd.vmware.vcloud.vmCapabilitiesSection+xml"
+            }
             EntityType::Vms => "application/vnd.vmware.vcloud.vms+xml",
             EntityType::VmScreenAcquireTicket => "application/vnd.vmware.vcloud.screenTicket+xml",
             EntityType::VmScreenAcquireMksticket => "application/vnd.vmware.vcloud.mksTicket+xml",
-            EntityType::VmwProviderVdcResourcePool => "application/vnd.vmware.admin.vmwProviderVdcResourcePool+xml",
-            EntityType::VmwProviderVdcResourcePoolSet => "application/vnd.vmware.admin.vmwProviderVdcResourcePoolSet+xml",
-            EntityType::VmwPvdcStorageProfile => "application/vnd.vmware.admin.vmwPvdcStorageProfile+xml",
+            EntityType::VmwProviderVdcResourcePool => {
+                "application/vnd.vmware.admin.vmwProviderVdcResourcePool+xml"
+            }
+            EntityType::VmwProviderVdcResourcePoolSet => {
+                "application/vnd.vmware.admin.vmwProviderVdcResourcePoolSet+xml"
+            }
+            EntityType::VmwPvdcStorageProfile => {
+                "application/vnd.vmware.admin.vmwPvdcStorageProfile+xml"
+            }
             EntityType::VmwStorageProfiles => "application/vnd.vmware.admin.vmwStorageProfiles+xml",
             EntityType::VappNetwork => "application/vnd.vmware.vcloud.vAppNetwork+xml",
         }
@@ -590,11 +650,15 @@ impl std::str::FromStr for EntityType {
             "admin_org" => Ok(EntityType::AdminOrg),
             "application/vnd.vmware.admin.service+xml" => Ok(EntityType::AdminService),
             "admin_service" => Ok(EntityType::AdminService),
-            "application/vnd.vmware.vcloud.allocatedNetworkAddress+xml" => Ok(EntityType::AllocatedNetworkAddress),
+            "application/vnd.vmware.vcloud.allocatedNetworkAddress+xml" => {
+                Ok(EntityType::AllocatedNetworkAddress)
+            }
             "allocated_network_address" => Ok(EntityType::AllocatedNetworkAddress),
             "application/vnd.vmware.admin.amqpSettings+xml" => Ok(EntityType::AmqpSettings),
             "amqp_settings" => Ok(EntityType::AmqpSettings),
-            "application/vnd.vmware.vcloud.apiextensibility+xml" => Ok(EntityType::ApiExtensibility),
+            "application/vnd.vmware.vcloud.apiextensibility+xml" => {
+                Ok(EntityType::ApiExtensibility)
+            }
             "api_extensibility" => Ok(EntityType::ApiExtensibility),
             "application/vnd.vmware.admin.apiFilter+xml" => Ok(EntityType::ApiFilter),
             "api_filter" => Ok(EntityType::ApiFilter),
@@ -602,19 +666,31 @@ impl std::str::FromStr for EntityType {
             "application_binary" => Ok(EntityType::ApplicationBinary),
             "application/vnd.vmware.vcloud.catalog+xml" => Ok(EntityType::Catalog),
             "catalog" => Ok(EntityType::Catalog),
-            "application/vnd.vmware.vcloud.captureVAppParams+xml" => Ok(EntityType::CaptureVappParams),
+            "application/vnd.vmware.vcloud.captureVAppParams+xml" => {
+                Ok(EntityType::CaptureVappParams)
+            }
             "capture_vapp_params" => Ok(EntityType::CaptureVappParams),
-            "application/vnd.vmware.vcloud.vm.' 'checkPostGuestCustomizationSection+xml" => Ok(EntityType::CheckPostGuestCustomizationSection),
-            "check_post_guest_customization_section" => Ok(EntityType::CheckPostGuestCustomizationSection),
+            "application/vnd.vmware.vcloud.vm.' 'checkPostGuestCustomizationSection+xml" => {
+                Ok(EntityType::CheckPostGuestCustomizationSection)
+            }
+            "check_post_guest_customization_section" => {
+                Ok(EntityType::CheckPostGuestCustomizationSection)
+            }
             "application/vnd.vmware.vcloud.cloneVAppParams+xml" => Ok(EntityType::CloneVappParams),
             "clone_vapp_params" => Ok(EntityType::CloneVappParams),
-            "application/vnd.vmware.vcloud.composeVAppParams+xml" => Ok(EntityType::ComposeVappParams),
+            "application/vnd.vmware.vcloud.composeVAppParams+xml" => {
+                Ok(EntityType::ComposeVappParams)
+            }
             "compose_vapp_params" => Ok(EntityType::ComposeVappParams),
             "application/vnd.vmware.vm.complianceResult+xml" => Ok(EntityType::ComplianceResult),
             "compliance_result" => Ok(EntityType::ComplianceResult),
-            "application/vnd.vmware.vcloud.controlAccess+xml" => Ok(EntityType::ControlAccessParams),
+            "application/vnd.vmware.vcloud.controlAccess+xml" => {
+                Ok(EntityType::ControlAccessParams)
+            }
             "control_access_params" => Ok(EntityType::ControlAccessParams),
-            "application/vnd.vmware.vcloud.metrics.currentUsageSpec+xml" => Ok(EntityType::CurrentUsage),
+            "application/vnd.vmware.vcloud.metrics.currentUsageSpec+xml" => {
+                Ok(EntityType::CurrentUsage)
+            }
             "current_usage" => Ok(EntityType::CurrentUsage),
             "application/vnd.vmware.admin.datastoreList+xml" => Ok(EntityType::DatastoreReferences),
             "datastore_references" => Ok(EntityType::DatastoreReferences),
@@ -624,59 +700,89 @@ impl std::str::FromStr for EntityType {
             "deploy" => Ok(EntityType::Deploy),
             "application/vnd.vmware.vcloud.disk+xml" => Ok(EntityType::Disk),
             "disk" => Ok(EntityType::Disk),
-            "application/vnd.vmware.vcloud.diskAttachOrDetachParams+xml" => Ok(EntityType::DiskAttachDetachParams),
+            "application/vnd.vmware.vcloud.diskAttachOrDetachParams+xml" => {
+                Ok(EntityType::DiskAttachDetachParams)
+            }
             "disk_attach_detach_params" => Ok(EntityType::DiskAttachDetachParams),
             "application/vnd.vmware.vcloud.diskCreateParams+xml" => Ok(EntityType::DiskCreateParms),
             "disk_create_parms" => Ok(EntityType::DiskCreateParms),
             "application/vnd.vmware.admin.edgeGateway+xml" => Ok(EntityType::EdgeGateway),
             "edge_gateway" => Ok(EntityType::EdgeGateway),
-            "application/vnd.vmware.vcloud.edgeGatewayFormFactor+xml" => Ok(EntityType::EdgeGatewayFormFactor),
+            "application/vnd.vmware.vcloud.edgeGatewayFormFactor+xml" => {
+                Ok(EntityType::EdgeGatewayFormFactor)
+            }
             "edge_gateway_form_factor" => Ok(EntityType::EdgeGatewayFormFactor),
-            "application/vnd.vmware.admin.edgeGatewayServiceConfiguration+xml" => Ok(EntityType::EdgeGatewayServiceConfiguration),
+            "application/vnd.vmware.admin.edgeGatewayServiceConfiguration+xml" => {
+                Ok(EntityType::EdgeGatewayServiceConfiguration)
+            }
             "edge_gateway_service_configuration" => Ok(EntityType::EdgeGatewayServiceConfiguration),
-            "application/vnd.vmware.vcloud.SyslogSettings+xml" => Ok(EntityType::EdgeGatewaySysLogServerIp),
+            "application/vnd.vmware.vcloud.SyslogSettings+xml" => {
+                Ok(EntityType::EdgeGatewaySysLogServerIp)
+            }
             "edge_gateway_sys_log_server_ip" => Ok(EntityType::EdgeGatewaySysLogServerIp),
             "application/vnd.vmware.admin.vmwExtension+xml" => Ok(EntityType::Extension),
             "extension" => Ok(EntityType::Extension),
-            "application/vnd.vmware.admin.extensionServices+xml" => Ok(EntityType::ExtensionServices),
+            "application/vnd.vmware.admin.extensionServices+xml" => {
+                Ok(EntityType::ExtensionServices)
+            }
             "extension_services" => Ok(EntityType::ExtensionServices),
             "application/vnd.vmware.admin.vmwexternalnet+xml" => Ok(EntityType::ExternalNetwork),
             "external_network" => Ok(EntityType::ExternalNetwork),
-            "application/vnd.vmware.admin.vmwExternalNetworkReferences+xml" => Ok(EntityType::ExternalNetworkRefs),
+            "application/vnd.vmware.admin.vmwExternalNetworkReferences+xml" => {
+                Ok(EntityType::ExternalNetworkRefs)
+            }
             "external_network_refs" => Ok(EntityType::ExternalNetworkRefs),
-            "application/vnd.vmware.vcloud.guestCustomizationSection+xml" => Ok(EntityType::GuestCustomizationSection),
+            "application/vnd.vmware.vcloud.guestCustomizationSection+xml" => {
+                Ok(EntityType::GuestCustomizationSection)
+            }
             "guest_customization_section" => Ok(EntityType::GuestCustomizationSection),
-            "application/vnd.vmware.vcloud.metrics.historicUsageSpec+xml" => Ok(EntityType::HistoricUsage),
+            "application/vnd.vmware.vcloud.metrics.historicUsageSpec+xml" => {
+                Ok(EntityType::HistoricUsage)
+            }
             "historic_usage" => Ok(EntityType::HistoricUsage),
             "application/vnd.vmware.admin.host+xml" => Ok(EntityType::Host),
             "host" => Ok(EntityType::Host),
             "application/vnd.vmware.admin.vmwHostReferences+xml" => Ok(EntityType::HostRefs),
             "host_refs" => Ok(EntityType::HostRefs),
-            "application/vnd.vmware.vcloud.instantiateVAppTemplateParams+xml" => Ok(EntityType::InstantiateVappTemplateParams),
+            "application/vnd.vmware.vcloud.instantiateVAppTemplateParams+xml" => {
+                Ok(EntityType::InstantiateVappTemplateParams)
+            }
             "instantiate_vapp_template_params" => Ok(EntityType::InstantiateVappTemplateParams),
             "application/json" => Ok(EntityType::Json),
             "json" => Ok(EntityType::Json),
-            "application/vnd.vmware.vcloud.leaseSettingsSection+xml" => Ok(EntityType::LeaseSettings),
+            "application/vnd.vmware.vcloud.leaseSettingsSection+xml" => {
+                Ok(EntityType::LeaseSettings)
+            }
             "lease_settings" => Ok(EntityType::LeaseSettings),
             "application/vnd.vmware.vcloud.media+xml" => Ok(EntityType::Media),
             "media" => Ok(EntityType::Media),
-            "application/vnd.vmware.vcloud.mediaInsertOrEjectParams+xml" => Ok(EntityType::MediaInsertOrEjectParams),
+            "application/vnd.vmware.vcloud.mediaInsertOrEjectParams+xml" => {
+                Ok(EntityType::MediaInsertOrEjectParams)
+            }
             "media_insert_or_eject_params" => Ok(EntityType::MediaInsertOrEjectParams),
             "application/vnd.vmware.vcloud.metadata+xml" => Ok(EntityType::Metadata),
             "metadata" => Ok(EntityType::Metadata),
             "application/vnd.vmware.vcloud.metadata.value+xml" => Ok(EntityType::MetadataValue),
             "metadata_value" => Ok(EntityType::MetadataValue),
-            "application/vnd.vmware.vcloud.networkConfigSection+xml" => Ok(EntityType::NetworkConfigSection),
+            "application/vnd.vmware.vcloud.networkConfigSection+xml" => {
+                Ok(EntityType::NetworkConfigSection)
+            }
             "network_config_section" => Ok(EntityType::NetworkConfigSection),
-            "application/vnd.vmware.vcloud.networkConnectionSection+xml" => Ok(EntityType::NetworkConnectionSection),
+            "application/vnd.vmware.vcloud.networkConnectionSection+xml" => {
+                Ok(EntityType::NetworkConnectionSection)
+            }
             "network_connection_section" => Ok(EntityType::NetworkConnectionSection),
             "application/vnd.vmware.admin.networkManagers+xml" => Ok(EntityType::NetworkManagers),
             "network_managers" => Ok(EntityType::NetworkManagers),
-            "application/vnd.vmware.admin.vmwNetworkPoolReferences+xml" => Ok(EntityType::NetworkPoolReferences),
+            "application/vnd.vmware.admin.vmwNetworkPoolReferences+xml" => {
+                Ok(EntityType::NetworkPoolReferences)
+            }
             "network_pool_references" => Ok(EntityType::NetworkPoolReferences),
             "application/vnd.vmware.admin.nsxTmanager+xml" => Ok(EntityType::NsxtManager),
             "nsxt_manager" => Ok(EntityType::NsxtManager),
-            "application/vnd.vmware.vcloud.operatingSystemSection+xml" => Ok(EntityType::OperatingSystemSection),
+            "application/vnd.vmware.vcloud.operatingSystemSection+xml" => {
+                Ok(EntityType::OperatingSystemSection)
+            }
             "operating_system_section" => Ok(EntityType::OperatingSystemSection),
             "application/vnd.vmware.vcloud.org+xml" => Ok(EntityType::Org),
             "org" => Ok(EntityType::Org),
@@ -694,9 +800,13 @@ impl std::str::FromStr for EntityType {
             "product_sections" => Ok(EntityType::ProductSections),
             "application/vnd.vmware.admin.providervdc+xml" => Ok(EntityType::ProviderVdc),
             "provider_vdc" => Ok(EntityType::ProviderVdc),
-            "application/vnd.vmware.admin.createProviderVdcParams+xml" => Ok(EntityType::ProviderVdcParams),
+            "application/vnd.vmware.admin.createProviderVdcParams+xml" => {
+                Ok(EntityType::ProviderVdcParams)
+            }
             "provider_vdc_params" => Ok(EntityType::ProviderVdcParams),
-            "application/vnd.vmware.admin.publishCatalogParams+xml" => Ok(EntityType::PublishCatalogParams),
+            "application/vnd.vmware.admin.publishCatalogParams+xml" => {
+                Ok(EntityType::PublishCatalogParams)
+            }
             "publish_catalog_params" => Ok(EntityType::PublishCatalogParams),
             "application/vnd.vmware.vcloud.query.queryList+xml" => Ok(EntityType::QueryList),
             "query_list" => Ok(EntityType::QueryList),
@@ -704,17 +814,23 @@ impl std::str::FromStr for EntityType {
             "rasd_item" => Ok(EntityType::RasdItem),
             "application/vnd.vmware.vcloud.rasdItemsList+xml" => Ok(EntityType::RasdItemsList),
             "rasd_items_list" => Ok(EntityType::RasdItemsList),
-            "application/vnd.vmware.vcloud.recomposeVAppParams+xml" => Ok(EntityType::RecomposeVappParams),
+            "application/vnd.vmware.vcloud.recomposeVAppParams+xml" => {
+                Ok(EntityType::RecomposeVappParams)
+            }
             "recompose_vapp_params" => Ok(EntityType::RecomposeVappParams),
             "application/vnd.vmware.vcloud.query.records+xml" => Ok(EntityType::Records),
             "records" => Ok(EntityType::Records),
-            "application/vnd.vmware.admin.registerVimServerParams+xml" => Ok(EntityType::RegisterVcServerParams),
+            "application/vnd.vmware.admin.registerVimServerParams+xml" => {
+                Ok(EntityType::RegisterVcServerParams)
+            }
             "register_vc_server_params" => Ok(EntityType::RegisterVcServerParams),
             "application/vnd.vmware.vcloud.relocateVmParams+xml" => Ok(EntityType::RelocateParams),
             "relocate_params" => Ok(EntityType::RelocateParams),
             "application/vnd.vmware.admin.resourcePoolList+xml" => Ok(EntityType::ResourcePoolList),
             "resource_pool_list" => Ok(EntityType::ResourcePoolList),
-            "application/vnd.vmware.admin.resourcePoolSetUpdateParams+xml" => Ok(EntityType::ResPoolSetUpdateParams),
+            "application/vnd.vmware.admin.resourcePoolSetUpdateParams+xml" => {
+                Ok(EntityType::ResPoolSetUpdateParams)
+            }
             "res_pool_set_update_params" => Ok(EntityType::ResPoolSetUpdateParams),
             "application/vnd.vmware.admin.role+xml" => Ok(EntityType::Role),
             "role" => Ok(EntityType::Role),
@@ -722,7 +838,9 @@ impl std::str::FromStr for EntityType {
             "right" => Ok(EntityType::Right),
             "application/vnd.vmware.admin.rights+xml" => Ok(EntityType::Rights),
             "rights" => Ok(EntityType::Rights),
-            "application/vnd.vmware.vcloud.createSnapshotParams+xml" => Ok(EntityType::SnapshotCreate),
+            "application/vnd.vmware.vcloud.createSnapshotParams+xml" => {
+                Ok(EntityType::SnapshotCreate)
+            }
             "snapshot_create" => Ok(EntityType::SnapshotCreate),
             "application/vnd.vmware.vcloud.startupSection+xml" => Ok(EntityType::StartupSection),
             "startup_section" => Ok(EntityType::StartupSection),
@@ -736,11 +854,19 @@ impl std::str::FromStr for EntityType {
             "text_xml" => Ok(EntityType::TextXml),
             "application/vnd.vmware.vcloud.undeployVAppParams+xml" => Ok(EntityType::Undeploy),
             "undeploy" => Ok(EntityType::Undeploy),
-            "application/vnd.vmware.admin.updateProviderVdcStorageProfiles+xml" => Ok(EntityType::UpdateProviderVdcStorageProfiles),
-            "update_provider_vdc_storage_profiles" => Ok(EntityType::UpdateProviderVdcStorageProfiles),
-            "application/vnd.vmware.admin.updateVdcStorageProfiles+xml" => Ok(EntityType::UpdateVdcStorageProfiles),
+            "application/vnd.vmware.admin.updateProviderVdcStorageProfiles+xml" => {
+                Ok(EntityType::UpdateProviderVdcStorageProfiles)
+            }
+            "update_provider_vdc_storage_profiles" => {
+                Ok(EntityType::UpdateProviderVdcStorageProfiles)
+            }
+            "application/vnd.vmware.admin.updateVdcStorageProfiles+xml" => {
+                Ok(EntityType::UpdateVdcStorageProfiles)
+            }
             "update_vdc_storage_profiles" => Ok(EntityType::UpdateVdcStorageProfiles),
-            "application/vnd.vmware.vcloud.uploadVAppTemplateParams+xml" => Ok(EntityType::UploadVappTemplateParams),
+            "application/vnd.vmware.vcloud.uploadVAppTemplateParams+xml" => {
+                Ok(EntityType::UploadVappTemplateParams)
+            }
             "upload_vapp_template_params" => Ok(EntityType::UploadVappTemplateParams),
             "application/vnd.vmware.admin.user+xml" => Ok(EntityType::User),
             "user" => Ok(EntityType::User),
@@ -752,17 +878,25 @@ impl std::str::FromStr for EntityType {
             "vdc" => Ok(EntityType::Vdc),
             "application/vnd.vmware.admin.vdc+xml" => Ok(EntityType::VdcAdmin),
             "vdc_admin" => Ok(EntityType::VdcAdmin),
-            "application/vnd.vmware.vcloud.vdcComputePolicyReferences+xml" => Ok(EntityType::VdcComputePolicyReferences),
+            "application/vnd.vmware.vcloud.vdcComputePolicyReferences+xml" => {
+                Ok(EntityType::VdcComputePolicyReferences)
+            }
             "vdc_compute_policy_references" => Ok(EntityType::VdcComputePolicyReferences),
             "application/vnd.vmware.admin.vdcReferences+xml" => Ok(EntityType::VdcReferences),
             "vdc_references" => Ok(EntityType::VdcReferences),
-            "application/vnd.vmware.vcloud.vdcStorageProfile+xml" => Ok(EntityType::VdcStorageProfile),
+            "application/vnd.vmware.vcloud.vdcStorageProfile+xml" => {
+                Ok(EntityType::VdcStorageProfile)
+            }
             "vdc_storage_profile" => Ok(EntityType::VdcStorageProfile),
-            "application/vnd.vmware.admin.vdcStorageProfile+xml" => Ok(EntityType::VdcStorageProfileAdmin),
+            "application/vnd.vmware.admin.vdcStorageProfile+xml" => {
+                Ok(EntityType::VdcStorageProfileAdmin)
+            }
             "vdc_storage_profile_admin" => Ok(EntityType::VdcStorageProfileAdmin),
             "application/vnd.vmware.admin.createVdcParams+xml" => Ok(EntityType::VdcsParams),
             "vdcs_params" => Ok(EntityType::VdcsParams),
-            "application/vnd.vmware.admin.vmwVimServerReferences+xml" => Ok(EntityType::VimServerRefs),
+            "application/vnd.vmware.admin.vmwVimServerReferences+xml" => {
+                Ok(EntityType::VimServerRefs)
+            }
             "vim_server_refs" => Ok(EntityType::VimServerRefs),
             "application/vnd.vmware.admin.vmwvirtualcenter+xml" => Ok(EntityType::VirtualCenter),
             "virtual_center" => Ok(EntityType::VirtualCenter),
@@ -770,21 +904,35 @@ impl std::str::FromStr for EntityType {
             "vm" => Ok(EntityType::Vm),
             "application/vnd.vmware.vcloud.bootOptionsSection+xml" => Ok(EntityType::VmBootOptions),
             "vm_boot_options" => Ok(EntityType::VmBootOptions),
-            "application/vnd.vmware.vcloud.vmCapabilitiesSection+xml" => Ok(EntityType::VmCapabilitiesSection),
+            "application/vnd.vmware.vcloud.vmCapabilitiesSection+xml" => {
+                Ok(EntityType::VmCapabilitiesSection)
+            }
             "vm_capabilities_section" => Ok(EntityType::VmCapabilitiesSection),
             "application/vnd.vmware.vcloud.vms+xml" => Ok(EntityType::Vms),
             "vms" => Ok(EntityType::Vms),
-            "application/vnd.vmware.vcloud.screenTicket+xml" => Ok(EntityType::VmScreenAcquireTicket),
+            "application/vnd.vmware.vcloud.screenTicket+xml" => {
+                Ok(EntityType::VmScreenAcquireTicket)
+            }
             "vm_screen_acquire_ticket" => Ok(EntityType::VmScreenAcquireTicket),
-            "application/vnd.vmware.vcloud.mksTicket+xml" => Ok(EntityType::VmScreenAcquireMksticket),
+            "application/vnd.vmware.vcloud.mksTicket+xml" => {
+                Ok(EntityType::VmScreenAcquireMksticket)
+            }
             "vm_screen_acquire_mksticket" => Ok(EntityType::VmScreenAcquireMksticket),
-            "application/vnd.vmware.admin.vmwProviderVdcResourcePool+xml" => Ok(EntityType::VmwProviderVdcResourcePool),
+            "application/vnd.vmware.admin.vmwProviderVdcResourcePool+xml" => {
+                Ok(EntityType::VmwProviderVdcResourcePool)
+            }
             "vmw_provider_vdc_resource_pool" => Ok(EntityType::VmwProviderVdcResourcePool),
-            "application/vnd.vmware.admin.vmwProviderVdcResourcePoolSet+xml" => Ok(EntityType::VmwProviderVdcResourcePoolSet),
+            "application/vnd.vmware.admin.vmwProviderVdcResourcePoolSet+xml" => {
+                Ok(EntityType::VmwProviderVdcResourcePoolSet)
+            }
             "vmw_provider_vdc_resource_pool_set" => Ok(EntityType::VmwProviderVdcResourcePoolSet),
-            "application/vnd.vmware.admin.vmwPvdcStorageProfile+xml" => Ok(EntityType::VmwPvdcStorageProfile),
+            "application/vnd.vmware.admin.vmwPvdcStorageProfile+xml" => {
+                Ok(EntityType::VmwPvdcStorageProfile)
+            }
             "vmw_pvdc_storage_profile" => Ok(EntityType::VmwPvdcStorageProfile),
-            "application/vnd.vmware.admin.vmwStorageProfiles+xml" => Ok(EntityType::VmwStorageProfiles),
+            "application/vnd.vmware.admin.vmwStorageProfiles+xml" => {
+                Ok(EntityType::VmwStorageProfiles)
+            }
             "vmw_storage_profiles" => Ok(EntityType::VmwStorageProfiles),
             "application/vnd.vmware.vcloud.vAppNetwork+xml" => Ok(EntityType::VappNetwork),
             "vapp_network" => Ok(EntityType::VappNetwork),
@@ -898,7 +1046,6 @@ pub const ENTITY_TYPES: &[EntityType] = &[
     EntityType::VmwStorageProfiles,
     EntityType::VappNetwork,
 ];
-
 
 impl std::fmt::Display for EdgeGatewayType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -1620,6 +1767,69 @@ impl std::str::FromStr for QueryResultFormat {
     }
 }
 
+/// Well known endpoints available from a Session resource.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum WellKnownEndpoint {
+    LoggedInOrg,
+    OrgVdc,
+    OrgNetwork,
+    OrgCatalog,
+    QueryList,
+    Admin,
+    ApiExtensibility,
+    Extension,
+    OrgList,
+    SnapshotCreate,
+    OpenApi,
+}
+
+impl WellKnownEndpoint {
+    pub fn relation(&self) -> RelationType {
+        match self {
+            WellKnownEndpoint::LoggedInOrg => RelationType::Down,
+            WellKnownEndpoint::OrgVdc => RelationType::Down,
+            WellKnownEndpoint::OrgNetwork => RelationType::Down,
+            WellKnownEndpoint::OrgCatalog => RelationType::Down,
+            WellKnownEndpoint::QueryList => RelationType::Down,
+            WellKnownEndpoint::Admin => RelationType::Down,
+            WellKnownEndpoint::ApiExtensibility => RelationType::DownExtensibility,
+            WellKnownEndpoint::Extension => RelationType::Down,
+            WellKnownEndpoint::OrgList => RelationType::Down,
+            WellKnownEndpoint::SnapshotCreate => RelationType::SnapshotCreate,
+            WellKnownEndpoint::OpenApi => RelationType::OpenApi,
+        }
+    }
+
+    pub fn entity(&self) -> EntityType {
+        match self {
+            WellKnownEndpoint::LoggedInOrg => EntityType::Org,
+            WellKnownEndpoint::OrgVdc => EntityType::Vdc,
+            WellKnownEndpoint::OrgNetwork => EntityType::OrgNetwork,
+            WellKnownEndpoint::OrgCatalog => EntityType::Catalog,
+            WellKnownEndpoint::QueryList => EntityType::QueryList,
+            WellKnownEndpoint::Admin => EntityType::Admin,
+            WellKnownEndpoint::ApiExtensibility => EntityType::ApiExtensibility,
+            WellKnownEndpoint::Extension => EntityType::Extension,
+            WellKnownEndpoint::OrgList => EntityType::OrgList,
+            WellKnownEndpoint::SnapshotCreate => EntityType::SnapshotCreate,
+            WellKnownEndpoint::OpenApi => EntityType::Json,
+        }
+    }
+}
+
+pub const WELL_KNOWN_ENDPOINTS: &[WellKnownEndpoint] = &[
+    WellKnownEndpoint::LoggedInOrg,
+    WellKnownEndpoint::OrgVdc,
+    WellKnownEndpoint::OrgNetwork,
+    WellKnownEndpoint::OrgCatalog,
+    WellKnownEndpoint::QueryList,
+    WellKnownEndpoint::Admin,
+    WellKnownEndpoint::ApiExtensibility,
+    WellKnownEndpoint::Extension,
+    WellKnownEndpoint::OrgList,
+    WellKnownEndpoint::SnapshotCreate,
+    WellKnownEndpoint::OpenApi,
+];
 /// Return the vCloud status message for a given status code.
 pub fn vcloud_status_message(status: i32) -> Option<&'static str> {
     match status {
@@ -1760,5 +1970,15 @@ mod tests {
     #[test]
     fn entity_types_len() {
         assert_eq!(ENTITY_TYPES.len(), 103);
+    }
+    #[test]
+    fn well_known_endpoint_mapping() {
+        assert_eq!(WellKnownEndpoint::OpenApi.relation(), RelationType::OpenApi);
+        assert_eq!(WellKnownEndpoint::OpenApi.entity(), EntityType::Json);
+    }
+
+    #[test]
+    fn well_known_endpoints_len() {
+        assert_eq!(WELL_KNOWN_ENDPOINTS.len(), 11);
     }
 }
