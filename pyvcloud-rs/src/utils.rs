@@ -112,6 +112,18 @@ pub fn adapter_type_to_name(adapter_type: &str) -> String {
     }
 }
 
+/// Return the canonical name from `names` matching `name` case-insensitively.
+///
+/// If no match is found `name` is returned as-is.
+pub fn to_camel_case(name: &str, names: &[&str]) -> String {
+    for n in names {
+        if name.eq_ignore_ascii_case(n) {
+            return (*n).to_string();
+        }
+    }
+    name.to_string()
+}
+
 /// Normalize a path by removing `.` and `..` components without touching the
 /// filesystem.
 fn normalize_path<P: AsRef<Path>>(path: P) -> PathBuf {
@@ -231,8 +243,8 @@ mod tests {
     use super::{
         adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
         get_admin_extension_href, get_admin_href, get_non_admin_href, get_safe_members_in_tar_file,
-        is_admin, netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, to_human,
-        uri_to_api_uri,
+        is_admin, netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, to_camel_case,
+        to_human, uri_to_api_uri,
     };
 
     #[test]
@@ -377,5 +389,12 @@ mod tests {
         let mut archive = Archive::new(Cursor::new(data));
         let members = get_safe_members_in_tar_file(&mut archive).unwrap();
         assert_eq!(members, vec![String::from("safe.txt")]);
+    }
+
+    #[test]
+    fn camel_case_lookup() {
+        let names = ["FooBar", "BazQuux"];
+        assert_eq!(to_camel_case("foobar", &names), "FooBar".to_string());
+        assert_eq!(to_camel_case("nomatch", &names), "nomatch".to_string());
     }
 }
