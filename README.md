@@ -42,7 +42,8 @@ A `compute_policy` module offers constants such as `VDC_COMPUTE_POLICY_MIN_API_V
 A `network_constants` module exposes REST endpoint templates such as `FIREWALL_URL_TEMPLATE` for constructing URLs programmatically.
 A helper function `get_safe_members_in_tar_file` is available for safely
 extracting archives. Utility `to_camel_case` assists with case-insensitive name
-matching.
+matching. The `stdout_xml` helper prints XML to the console with optional
+highlighting.
 See [RUST_MIGRATION_CHECKLIST.md](RUST_MIGRATION_CHECKLIST.md) for an overview of the migration plan and progress.
 
 ## Contributing
