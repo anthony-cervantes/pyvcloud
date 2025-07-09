@@ -2,10 +2,10 @@
 
 This document outlines iterative steps to migrate the deprecated `pyvcloud` Python SDK to a Rust library while adhering to SOLID and DRY principles.
 
-- [ ] **Assess Current Python Implementation**
+- [x] **Assess Current Python Implementation**
   - Review existing modules, tests and documentation.
   - Identify core API surfaces used by consumers.
-- [ ] **Define the Rust Project Structure**
+- [x] **Define the Rust Project Structure**
   - Create a new Rust crate for the library using `cargo new`.
   - Plan module layout mirroring current Python packages.
 - [ ] **Establish Build & Test Workflow**
