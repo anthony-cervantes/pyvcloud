@@ -101,6 +101,36 @@ pub fn extract_metadata_value(xml: &str) -> Option<String> {
     Some(value.to_string())
 }
 
+/// Convert a metadata XML snippet to a key-value map.
+///
+/// Each `<MetadataEntry>` element's `Key` and nested `Value` text are
+/// inserted into the returned map. Parsing errors are forwarded from
+/// `roxmltree`.
+pub fn metadata_to_dict(
+    xml: &str,
+) -> Result<std::collections::HashMap<String, String>, roxmltree::Error> {
+    let doc = roxmltree::Document::parse(xml)?;
+    let mut map = std::collections::HashMap::new();
+    for entry in doc
+        .descendants()
+        .filter(|n| n.has_tag_name("MetadataEntry"))
+    {
+        if let (Some(key), Some(value)) = (
+            entry
+                .children()
+                .find(|n| n.has_tag_name("Key"))
+                .and_then(|n| n.text()),
+            entry
+                .descendants()
+                .find(|n| n.has_tag_name("Value"))
+                .and_then(|n| n.text()),
+        ) {
+            map.insert(key.to_string(), value.to_string());
+        }
+    }
+    Ok(map)
+}
+
 /// Convert a duration in seconds to a human readable weeks, days and hours
 /// string in the form `"<weeks>w, <days>d, <hours>h"`.
 pub fn to_human(seconds: u64) -> String {
@@ -319,8 +349,8 @@ mod tests {
         adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
         extract_metadata_value, filter_attributes, format_xml, get_admin_extension_href,
         get_admin_href, get_non_admin_href, get_safe_members_in_tar_file, is_admin,
-        netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, to_camel_case, to_human,
-        uri_to_api_uri,
+        metadata_to_dict, netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href,
+        to_camel_case, to_human, uri_to_api_uri,
     };
 
     #[test]
@@ -503,5 +533,24 @@ mod tests {
     fn metadata_value_parsing() {
         let xml = r#"<MetadataValue><TypedValue><Value>bar</Value></TypedValue></MetadataValue>"#;
         assert_eq!(extract_metadata_value(xml).unwrap(), "bar");
+    }
+
+    #[test]
+    fn metadata_to_dict_parsing() {
+        let xml = r#"
+        <Metadata>
+            <MetadataEntry>
+                <Key>foo</Key>
+                <TypedValue><Value>bar</Value></TypedValue>
+            </MetadataEntry>
+            <MetadataEntry>
+                <Key>baz</Key>
+                <TypedValue><Value>qux</Value></TypedValue>
+            </MetadataEntry>
+        </Metadata>
+        "#;
+        let map = metadata_to_dict(xml).unwrap();
+        assert_eq!(map.get("foo"), Some(&"bar".to_string()));
+        assert_eq!(map.get("baz"), Some(&"qux".to_string()));
     }
 }
