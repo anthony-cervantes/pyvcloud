@@ -1,4 +1,5 @@
 use std::cmp::Ordering;
+use std::error::Error;
 use std::fmt;
 use std::str::FromStr;
 
@@ -128,6 +129,76 @@ pub fn vcd_api_current_versions() -> Vec<VcdApiVersion> {
     ]
 }
 
+/// Parse the XML returned by the `/versions` endpoint.
+///
+/// Versions marked as deprecated are skipped. When `include_alpha` is true,
+/// `<AlphaVersion>` entries are also considered with any numeric suffix after
+/// "alpha" removed.
+pub fn parse_supported_versions(
+    xml: &str,
+    include_alpha: bool,
+) -> Result<Vec<VcdApiVersion>, roxmltree::Error> {
+    let doc = roxmltree::Document::parse(xml)?;
+    let mut versions: Vec<VcdApiVersion> = Vec::new();
+
+    for node in doc.descendants().filter(|n| n.has_tag_name("VersionInfo")) {
+        if let Some(dep) = node.attribute("deprecated") {
+            if dep != "false" {
+                continue;
+            }
+        }
+        if let Some(ver) = node
+            .children()
+            .find(|n| n.has_tag_name("Version"))
+            .and_then(|n| n.text())
+        {
+            if let Ok(v) = ver.parse() {
+                versions.push(v);
+            }
+        }
+    }
+
+    if include_alpha {
+        for node in doc.descendants().filter(|n| n.has_tag_name("AlphaVersion")) {
+            if let Some(dep) = node.attribute("deprecated") {
+                if dep != "false" {
+                    continue;
+                }
+            }
+            if let Some(ver) = node
+                .children()
+                .find(|n| n.has_tag_name("Version"))
+                .and_then(|n| n.text())
+            {
+                let mut text = ver.to_string();
+                if let Some(idx) = text.find(crate::client::ALPHA_API_SUBSTRING) {
+                    text.truncate(idx + crate::client::ALPHA_API_SUBSTRING.len());
+                }
+                if let Ok(v) = text.parse() {
+                    versions.push(v);
+                }
+            }
+        }
+    }
+
+    versions.sort();
+    Ok(versions)
+}
+
+/// Retrieve the list of supported versions from a vCloud Director host.
+pub fn fetch_supported_versions(
+    base_uri: &str,
+    include_alpha: bool,
+) -> Result<Vec<VcdApiVersion>, Box<dyn Error>> {
+    let url = format!("{}/versions", crate::prep_base_uri(base_uri, false));
+    let resp = reqwest::blocking::get(url)?;
+    if !resp.status().is_success() {
+        return Err(format!("HTTP {}", resp.status()).into());
+    }
+    let text = resp.text()?;
+    Ok(parse_supported_versions(&text, include_alpha)?)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -158,5 +229,23 @@ mod tests {
         let versions = vcd_api_current_versions();
         assert_eq!(versions.len(), 9);
         assert_eq!(versions[0].to_string(), "29.0");
+    }
+
+    #[test]
+    fn parse_versions_xml() {
+        let xml = r#"
+        <SupportedVersions>
+            <VersionInfo deprecated="false"><Version>36.0</Version></VersionInfo>
+            <AlphaVersion deprecated="false"><Version>37.0.0-alpha-1</Version></AlphaVersion>
+        </SupportedVersions>
+        "#;
+        let versions = parse_supported_versions(xml, true).unwrap();
+        assert_eq!(versions.len(), 2);
+        assert_eq!(versions[0].to_string(), "36.0");
+        assert_eq!(versions[1].to_string(), "37.0.0-alpha");
+
+        let versions_no_alpha = parse_supported_versions(xml, false).unwrap();
+        assert_eq!(versions_no_alpha.len(), 1);
+        assert_eq!(versions_no_alpha[0].to_string(), "36.0");
     }
 }
