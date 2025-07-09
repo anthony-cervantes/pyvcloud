@@ -124,6 +124,31 @@ pub fn to_camel_case(name: &str, names: &[&str]) -> String {
     name.to_string()
 }
 
+/// Return a string representation of XML with optional ANSI color
+/// highlighting for element tags.
+pub fn format_xml(xml: &str, colorized: bool) -> String {
+    if !colorized {
+        return xml.to_string();
+    }
+    let re = regex::Regex::new(r"</?[^>]+>").unwrap();
+    let mut out = String::new();
+    let mut last = 0;
+    for mat in re.find_iter(xml) {
+        out.push_str(&xml[last..mat.start()]);
+        out.push_str("\x1b[34m");
+        out.push_str(mat.as_str());
+        out.push_str("\x1b[0m");
+        last = mat.end();
+    }
+    out.push_str(&xml[last..]);
+    out
+}
+
+/// Print XML to stdout with optional highlighting of element tags.
+pub fn stdout_xml(xml: &str, colorized: bool) {
+    println!("{}", format_xml(xml, colorized));
+}
+
 /// Normalize a path by removing `.` and `..` components without touching the
 /// filesystem.
 fn normalize_path<P: AsRef<Path>>(path: P) -> PathBuf {
@@ -242,9 +267,9 @@ pub fn get_admin_extension_href(href: &str) -> String {
 mod tests {
     use super::{
         adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
-        get_admin_extension_href, get_admin_href, get_non_admin_href, get_safe_members_in_tar_file,
-        is_admin, netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, to_camel_case,
-        to_human, uri_to_api_uri,
+        format_xml, get_admin_extension_href, get_admin_href, get_non_admin_href,
+        get_safe_members_in_tar_file, is_admin, netmask_to_cidr_prefix_len,
+        retrieve_compute_policy_id_from_href, to_camel_case, to_human, uri_to_api_uri,
     };
 
     #[test]
@@ -396,5 +421,17 @@ mod tests {
         let names = ["FooBar", "BazQuux"];
         assert_eq!(to_camel_case("foobar", &names), "FooBar".to_string());
         assert_eq!(to_camel_case("nomatch", &names), "nomatch".to_string());
+    }
+
+    #[test]
+    fn format_xml_no_color() {
+        let xml = "<foo></foo>";
+        assert_eq!(format_xml(xml, false), xml);
+    }
+
+    #[test]
+    fn format_xml_color_changes_output() {
+        let xml = "<foo></foo>";
+        assert_ne!(format_xml(xml, true), xml);
     }
 }
