@@ -8,7 +8,7 @@ This document outlines iterative steps to migrate the deprecated `pyvcloud` Pyth
 - [x] **Define the Rust Project Structure**
   - Create a new Rust crate for the library using `cargo new`.
   - Plan module layout mirroring current Python packages.
-- [ ] **Establish Build & Test Workflow**
+- [x] **Establish Build & Test Workflow**
   - Configure `cargo` with continuous integration to run `cargo fmt`, `clippy`, and unit tests.
   - Set up GitHub Actions or other CI to verify builds across platforms.
 - [ ] **Port Core Functionality**

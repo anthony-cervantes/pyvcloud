@@ -18,6 +18,8 @@ cargo clippy -- -D warnings
 cargo test
 ```
 
+These checks are also executed in GitHub Actions on every pull request.
+
 
 ## Notes
 
