@@ -41,6 +41,7 @@ Networking helpers like `cidr_to_netmask`, `uri_to_api_uri`, `build_network_url_
 A utility `filter_attributes` returns common attribute names for selected `ResourceType` values.
 A `compute_policy` module offers constants such as `VDC_COMPUTE_POLICY_MIN_API_VERSION` and a helper `generate_compute_policy_tags` for constructing compute policy XML snippets.
 A `network_constants` module exposes REST endpoint templates such as `FIREWALL_URL_TEMPLATE` for constructing URLs programmatically.
+A helper `parse_supported_versions` can read the XML from the `/versions` endpoint and `fetch_supported_versions` retrieves it over HTTP using `reqwest`.
 A helper function `get_safe_members_in_tar_file` is available for safely
 extracting archives. Utility `extract_metadata_value` reads an XML snippet to
 return the contained metadata text. Utility `to_camel_case` assists with case-insensitive name

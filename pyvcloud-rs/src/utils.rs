@@ -96,13 +96,8 @@ pub fn retrieve_compute_policy_id_from_href(href: &str) -> Option<String> {
 /// missing.
 pub fn extract_metadata_value(xml: &str) -> Option<String> {
     let doc = roxmltree::Document::parse(xml).ok()?;
-    let typed = doc
-        .descendants()
-        .find(|n| n.has_tag_name("TypedValue"))?;
-    let value = typed
-        .children()
-        .find(|n| n.has_tag_name("Value"))?
-        .text()?;
+    let typed = doc.descendants().find(|n| n.has_tag_name("TypedValue"))?;
+    let value = typed.children().find(|n| n.has_tag_name("Value"))?.text()?;
     Some(value.to_string())
 }
 
@@ -322,9 +317,10 @@ pub fn get_admin_extension_href(href: &str) -> String {
 mod tests {
     use super::{
         adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
-        extract_metadata_value, filter_attributes, format_xml, get_admin_extension_href, get_admin_href,
-        get_non_admin_href, get_safe_members_in_tar_file, is_admin, netmask_to_cidr_prefix_len,
-        retrieve_compute_policy_id_from_href, to_camel_case, to_human, uri_to_api_uri,
+        extract_metadata_value, filter_attributes, format_xml, get_admin_extension_href,
+        get_admin_href, get_non_admin_href, get_safe_members_in_tar_file, is_admin,
+        netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, to_camel_case, to_human,
+        uri_to_api_uri,
     };
 
     #[test]
