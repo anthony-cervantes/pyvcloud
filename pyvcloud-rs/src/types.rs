@@ -114,6 +114,219 @@ impl std::str::FromStr for VmNicProperty {
     }
 }
 
+/// Domains used for metadata entries.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MetadataDomain {
+    General,
+    System,
+}
+
+impl std::fmt::Display for MetadataDomain {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            MetadataDomain::General => "GENERAL",
+            MetadataDomain::System => "SYSTEM",
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for MetadataDomain {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "GENERAL" => Ok(MetadataDomain::General),
+            "SYSTEM" => Ok(MetadataDomain::System),
+            _ => Err(()),
+        }
+    }
+}
+
+/// Visibility levels for metadata keys.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MetadataVisibility {
+    Private,
+    ReadOnly,
+    ReadWrite,
+}
+
+impl std::fmt::Display for MetadataVisibility {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            MetadataVisibility::Private => "PRIVATE",
+            MetadataVisibility::ReadOnly => "READONLY",
+            MetadataVisibility::ReadWrite => "READWRITE",
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for MetadataVisibility {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "PRIVATE" => Ok(MetadataVisibility::Private),
+            "READONLY" => Ok(MetadataVisibility::ReadOnly),
+            "READWRITE" => Ok(MetadataVisibility::ReadWrite),
+            _ => Err(()),
+        }
+    }
+}
+
+/// Possible data types for metadata values.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MetadataValueType {
+    String,
+    Number,
+    Boolean,
+    DateTime,
+}
+
+impl std::fmt::Display for MetadataValueType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            MetadataValueType::String => "MetadataStringValue",
+            MetadataValueType::Number => "MetadataNumberValue",
+            MetadataValueType::Boolean => "MetadataBooleanValue",
+            MetadataValueType::DateTime => "MetadataDateTimeValue",
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for MetadataValueType {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "MetadataStringValue" => Ok(MetadataValueType::String),
+            "MetadataNumberValue" => Ok(MetadataValueType::Number),
+            "MetadataBooleanValue" => Ok(MetadataValueType::Boolean),
+            "MetadataDateTimeValue" => Ok(MetadataValueType::DateTime),
+            _ => Err(()),
+        }
+    }
+}
+
+/// Status values for asynchronous tasks.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TaskStatus {
+    Queued,
+    PreRunning,
+    Running,
+    Success,
+    Error,
+    Canceled,
+    Aborted,
+}
+
+impl std::fmt::Display for TaskStatus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            TaskStatus::Queued => "queued",
+            TaskStatus::PreRunning => "preRunning",
+            TaskStatus::Running => "running",
+            TaskStatus::Success => "success",
+            TaskStatus::Error => "error",
+            TaskStatus::Canceled => "canceled",
+            TaskStatus::Aborted => "aborted",
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for TaskStatus {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "queued" => Ok(TaskStatus::Queued),
+            "preRunning" => Ok(TaskStatus::PreRunning),
+            "running" => Ok(TaskStatus::Running),
+            "success" => Ok(TaskStatus::Success),
+            "error" => Ok(TaskStatus::Error),
+            "canceled" => Ok(TaskStatus::Canceled),
+            "aborted" => Ok(TaskStatus::Aborted),
+            _ => Err(()),
+        }
+    }
+}
+
+/// Edge gateway form factor options.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum GatewayBackingConfigType {
+    Compact,
+    Full,
+    Full4,
+    XLarge,
+}
+
+impl std::fmt::Display for GatewayBackingConfigType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            GatewayBackingConfigType::Compact => "compact",
+            GatewayBackingConfigType::Full => "full",
+            GatewayBackingConfigType::Full4 => "full4",
+            GatewayBackingConfigType::XLarge => "x-large",
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for GatewayBackingConfigType {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "compact" => Ok(GatewayBackingConfigType::Compact),
+            "full" => Ok(GatewayBackingConfigType::Full),
+            "full4" => Ok(GatewayBackingConfigType::Full4),
+            "x-large" => Ok(GatewayBackingConfigType::XLarge),
+            _ => Err(()),
+        }
+    }
+}
+
+/// Power state values reported for vApps.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum VAppPowerStatus {
+    Running,
+    Stopped,
+    Suspended,
+    Deployed,
+    Undeployed,
+}
+
+impl std::fmt::Display for VAppPowerStatus {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            VAppPowerStatus::Running => "4",
+            VAppPowerStatus::Stopped => "8",
+            VAppPowerStatus::Suspended => "3",
+            VAppPowerStatus::Deployed => "2",
+            VAppPowerStatus::Undeployed => "1",
+        };
+        f.write_str(s)
+    }
+}
+
+impl std::str::FromStr for VAppPowerStatus {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "4" => Ok(VAppPowerStatus::Running),
+            "8" => Ok(VAppPowerStatus::Stopped),
+            "3" => Ok(VAppPowerStatus::Suspended),
+            "2" => Ok(VAppPowerStatus::Deployed),
+            "1" => Ok(VAppPowerStatus::Undeployed),
+            _ => Err(()),
+        }
+    }
+}
+
 /// Return the vCloud status message for a given status code.
 pub fn vcloud_status_message(status: i32) -> Option<&'static str> {
     match status {
@@ -171,5 +384,26 @@ mod tests {
     #[test]
     fn status_message_unknown() {
         assert_eq!(vcloud_status_message(42), None);
+    }
+
+    #[test]
+    fn parse_metadata_domain() {
+        let d: MetadataDomain = "GENERAL".parse().unwrap();
+        assert_eq!(d, MetadataDomain::General);
+        assert_eq!(d.to_string(), "GENERAL");
+    }
+
+    #[test]
+    fn parse_task_status() {
+        let s: TaskStatus = "running".parse().unwrap();
+        assert_eq!(s, TaskStatus::Running);
+        assert_eq!(s.to_string(), "running");
+    }
+
+    #[test]
+    fn parse_vapp_power_status() {
+        let p: VAppPowerStatus = "4".parse().unwrap();
+        assert_eq!(p, VAppPowerStatus::Running);
+        assert_eq!(p.to_string(), "4");
     }
 }
