@@ -1,5 +1,8 @@
 //! Utility functions mirroring deprecated Python helpers.
 
+use std::io::{self, Read};
+use std::path::{Component, Path, PathBuf};
+
 /// Extract the ID portion of a vCloud urn string.
 ///
 /// Example:
@@ -109,6 +112,75 @@ pub fn adapter_type_to_name(adapter_type: &str) -> String {
     }
 }
 
+
+/// Normalize a path by removing `.` and `..` components without touching the
+/// filesystem.
+fn normalize_path<P: AsRef<Path>>(path: P) -> PathBuf {
+    let mut result = PathBuf::new();
+    for comp in path.as_ref().components() {
+        match comp {
+            Component::ParentDir => {
+                result.pop();
+            }
+            Component::CurDir => {}
+            other => result.push(other.as_os_str()),
+        }
+    }
+    result
+}
+
+/// Determine if the given path would escape the provided base directory.
+pub fn bad_path<P: AsRef<Path>, B: AsRef<Path>>(path: P, base: B) -> bool {
+    let full = normalize_path(base.as_ref().join(path.as_ref()));
+    !full.starts_with(base.as_ref())
+}
+
+/// Determine if a symlink or hard link target escapes the provided base
+/// directory. `link_parent` is the parent directory of the link within the
+/// archive.
+pub fn bad_link<P: AsRef<Path>, B: AsRef<Path>, L: AsRef<Path>>(
+    link_name: P,
+    base: B,
+    link_parent: L,
+) -> bool {
+    let parent = normalize_path(base.as_ref().join(link_parent.as_ref()));
+    bad_path(link_name, parent)
+}
+
+/// Retrieve the list of entry paths in a tar archive that are safe to extract.
+///
+/// Entries with paths outside of `.` or with links pointing outside are
+/// filtered out. The returned vector contains the safe entry paths as strings.
+pub fn get_safe_members_in_tar_file<R: Read>(
+    archive: &mut tar::Archive<R>,
+) -> io::Result<Vec<String>> {
+    let base = std::env::current_dir()?;
+    let mut result = Vec::new();
+    for entry in archive.entries()? {
+        let entry = entry?;
+        let path = entry.path()?;
+        if bad_path(&path, &base) {
+            eprintln!("{} is blocked: illegal path.", path.display());
+            continue;
+        }
+        let header = entry.header();
+        if header.entry_type().is_symlink() || header.entry_type().is_hard_link() {
+            if let Some(target) = entry.link_name()? {
+                if bad_link(&target, &base, path.parent().unwrap_or(Path::new(""))) {
+                    eprintln!(
+                        "{} is blocked: link to {}",
+                        path.display(),
+                        target.display()
+                    );
+                    continue;
+                }
+            }
+        }
+        result.push(path.to_string_lossy().into_owned());
+    }
+    Ok(result)
+}
+
 /// Return an admin version of the given vCD URL.
 ///
 /// If the input already points to the admin or admin extension endpoint it is
@@ -159,8 +231,9 @@ pub fn get_admin_extension_href(href: &str) -> String {
 mod tests {
     use super::{
         adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
-        get_admin_extension_href, get_admin_href, get_non_admin_href, is_admin,
-        netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href, to_human, uri_to_api_uri,
+        bad_link, bad_path, get_admin_extension_href, get_admin_href, get_non_admin_href,
+        get_safe_members_in_tar_file, is_admin, netmask_to_cidr_prefix_len,
+        retrieve_compute_policy_id_from_href, to_human, uri_to_api_uri,
     };
 
     #[test]
@@ -270,5 +343,40 @@ mod tests {
             get_admin_extension_href("https://host/api/admin/extension/vdc/1"),
             "https://host/api/admin/extension/vdc/1"
         );
+    }
+
+    #[test]
+    fn safe_members_filters_illegal_paths() {
+        use std::io::Cursor;
+        use tar::{Archive, Builder, Header, EntryType};
+
+        let mut data = Vec::new();
+        {
+            let mut builder = Builder::new(&mut data);
+
+            let mut hdr = Header::new_gnu();
+            hdr.set_path("safe.txt").unwrap();
+            hdr.set_size(4);
+            hdr.set_cksum();
+            builder
+                .append(&hdr, "safe".as_bytes())
+                .expect("append safe");
+
+            let mut hdr2 = Header::new_gnu();
+            hdr2.set_entry_type(EntryType::Symlink);
+            hdr2.set_path("link").unwrap();
+            hdr2.set_size(0);
+            hdr2.set_link_name_literal(b"../evil.txt").unwrap();
+            hdr2.set_cksum();
+            builder
+                .append(&hdr2, std::io::empty())
+                .expect("append link");
+
+            builder.finish().unwrap();
+        }
+
+        let mut archive = Archive::new(Cursor::new(data));
+        let members = get_safe_members_in_tar_file(&mut archive).unwrap();
+        assert_eq!(members, vec![String::from("safe.txt")]);
     }
 }
