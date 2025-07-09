@@ -89,6 +89,23 @@ pub fn retrieve_compute_policy_id_from_href(href: &str) -> Option<String> {
     href.rsplit('/').next().map(|s| s.to_string())
 }
 
+/// Extract the string value from a metadata XML snippet.
+///
+/// The function looks for a `<TypedValue><Value>` element and returns its text
+/// contents. `None` is returned if the XML cannot be parsed or the element is
+/// missing.
+pub fn extract_metadata_value(xml: &str) -> Option<String> {
+    let doc = roxmltree::Document::parse(xml).ok()?;
+    let typed = doc
+        .descendants()
+        .find(|n| n.has_tag_name("TypedValue"))?;
+    let value = typed
+        .children()
+        .find(|n| n.has_tag_name("Value"))?
+        .text()?;
+    Some(value.to_string())
+}
+
 /// Convert a duration in seconds to a human readable weeks, days and hours
 /// string in the form `"<weeks>w, <days>d, <hours>h"`.
 pub fn to_human(seconds: u64) -> String {
@@ -305,7 +322,7 @@ pub fn get_admin_extension_href(href: &str) -> String {
 mod tests {
     use super::{
         adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
-        filter_attributes, format_xml, get_admin_extension_href, get_admin_href,
+        extract_metadata_value, filter_attributes, format_xml, get_admin_extension_href, get_admin_href,
         get_non_admin_href, get_safe_members_in_tar_file, is_admin, netmask_to_cidr_prefix_len,
         retrieve_compute_policy_id_from_href, to_camel_case, to_human, uri_to_api_uri,
     };
@@ -484,5 +501,11 @@ mod tests {
     fn filter_attributes_none() {
         use crate::types::ResourceType;
         assert!(filter_attributes(ResourceType::EdgeGateway).is_none());
+    }
+
+    #[test]
+    fn metadata_value_parsing() {
+        let xml = r#"<MetadataValue><TypedValue><Value>bar</Value></TypedValue></MetadataValue>"#;
+        assert_eq!(extract_metadata_value(xml).unwrap(), "bar");
     }
 }
