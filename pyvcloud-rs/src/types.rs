@@ -1404,17 +1404,18 @@ impl VCloudStatus {
             VCloudStatus::UnrecognizedState => "Unrecognized state",
             VCloudStatus::PoweredOff => "Powered off",
             VCloudStatus::InconsistentState => "Inconsistent state",
-            VCloudStatus::ChildrenDoNotAllHaveSameStatus =>
-                "Children do not all have the same status",
-            VCloudStatus::UploadInitiatedOvfDescriptorPending =>
-                "Upload initiated, OVF descriptor pending",
-            VCloudStatus::UploadInitiatedCopyingContents =>
-                "Upload initiated, copying contents",
-            VCloudStatus::UploadInitiatedDiskContentsPending =>
-                "Upload initiated , disk contents pending",
+            VCloudStatus::ChildrenDoNotAllHaveSameStatus => {
+                "Children do not all have the same status"
+            }
+            VCloudStatus::UploadInitiatedOvfDescriptorPending => {
+                "Upload initiated, OVF descriptor pending"
+            }
+            VCloudStatus::UploadInitiatedCopyingContents => "Upload initiated, copying contents",
+            VCloudStatus::UploadInitiatedDiskContentsPending => {
+                "Upload initiated , disk contents pending"
+            }
             VCloudStatus::UploadQuarantined => "Upload has been quarantined",
-            VCloudStatus::UploadQuarantineExpired =>
-                "Upload quarantine period has expired",
+            VCloudStatus::UploadQuarantineExpired => "Upload quarantine period has expired",
         }
     }
 
