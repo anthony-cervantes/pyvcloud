@@ -7,6 +7,20 @@ ensures proper operation when there are mixed Python versions.  It also
 avoids changes to the default Python installation.  Another approach is
 to use virtualenv (see below).
 
+The new Rust implementation lives under `pyvcloud-rs`. To build it from
+source ensure you have a recent [Rust toolchain](https://www.rust-lang.org/tools/install)
+installed and run:
+
+```shell
+cargo build -p pyvcloud-rs
+```
+
+Install from a local checkout with:
+
+```shell
+cargo install --path pyvcloud-rs
+```
+
 Note that there are a couple of confusing exceptions related to installing
 `pip` itself. In these cases you **must** use the name `pip`.
 

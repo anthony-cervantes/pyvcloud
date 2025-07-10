@@ -18,7 +18,7 @@ This document outlines iterative steps to migrate the deprecated `pyvcloud` Pyth
 - [x] **Wrap REST API Interactions**
   - Use Rust HTTP libraries (e.g., `reqwest`) to replace Python REST calls.
   - Provide typed structures and error handling that match vCloud Director APIs.
-- [ ] **Maintain Documentation**
+- [x] **Maintain Documentation**
   - Update `README.md` and docs to explain building and using the Rust crate.
   - Document each module with Rustdoc comments.
 - [ ] **Verify Feature Parity**
