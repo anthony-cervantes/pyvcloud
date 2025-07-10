@@ -204,6 +204,72 @@ pub fn to_camel_case(name: &str, names: &[&str]) -> String {
     name.to_string()
 }
 
+/// Convert a resource XML snippet to a simple key-value map.
+///
+/// Attributes are optionally filtered by `attributes` or by the
+/// `resource_type`'s known attributes. Attribute keys listed in `exclude`
+/// are removed from the result. Child element text is also captured.
+pub fn to_dict(
+    xml: &str,
+    attributes: Option<&[&str]>,
+    resource_type: Option<crate::types::ResourceType>,
+    exclude: &[&str],
+) -> Result<std::collections::HashMap<String, String>, roxmltree::Error> {
+    use std::collections::HashMap;
+
+    let doc = roxmltree::Document::parse(xml)?;
+    let root = doc.root_element();
+    let mut map: HashMap<String, String> = HashMap::new();
+
+    if let Some(attrs) = attributes {
+        for &a in attrs {
+            map.entry(a.to_string()).or_default();
+        }
+    }
+
+    if let Some(rt) = resource_type {
+        if let Some(attrs) = filter_attributes(rt) {
+            for &a in attrs {
+                map.entry(a.to_string()).or_default();
+            }
+        }
+    }
+
+    let allow = |name: &str| -> bool {
+        if let Some(attrs) = attributes {
+            attrs.contains(&name)
+        } else if let Some(rt) = resource_type {
+            filter_attributes(rt).is_none_or(|arr| arr.contains(&name))
+        } else {
+            true
+        }
+    };
+
+    for attr in root.attributes() {
+        let name = attr.name();
+        if allow(name) {
+            let value = if name == "id" {
+                extract_id(Some(attr.value())).unwrap_or_default()
+            } else {
+                attr.value().to_string()
+            };
+            map.insert(name.to_string(), value);
+        }
+    }
+
+    for child in root.children().filter(|n| n.is_element()) {
+        if let Some(text) = child.text() {
+            map.insert(child.tag_name().name().to_string(), text.to_string());
+        }
+    }
+
+    for &e in exclude {
+        map.remove(e);
+    }
+
+    Ok(map)
+}
+
 /// Return a string representation of XML with optional ANSI color
 /// highlighting for element tags.
 pub fn format_xml(xml: &str, colorized: bool) -> String {
@@ -350,7 +416,7 @@ mod tests {
         extract_metadata_value, filter_attributes, format_xml, get_admin_extension_href,
         get_admin_href, get_non_admin_href, get_safe_members_in_tar_file, is_admin,
         metadata_to_dict, netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href,
-        to_camel_case, to_human, uri_to_api_uri,
+        to_camel_case, to_dict, to_human, uri_to_api_uri,
     };
 
     #[test]
@@ -552,5 +618,24 @@ mod tests {
         let map = metadata_to_dict(xml).unwrap();
         assert_eq!(map.get("foo"), Some(&"bar".to_string()));
         assert_eq!(map.get("baz"), Some(&"qux".to_string()));
+    }
+
+    #[test]
+    fn to_dict_basic() {
+        use crate::types::ResourceType;
+        let xml = r#"<Task id="urn:vcloud:task:1" name="deploy"><Details>done</Details></Task>"#;
+        let map = to_dict(xml, None, Some(ResourceType::Task), &[]).unwrap();
+        assert_eq!(map.get("id"), Some(&"1".to_string()));
+        assert_eq!(map.get("name"), Some(&"deploy".to_string()));
+        assert_eq!(map.get("Details"), Some(&"done".to_string()));
+    }
+
+    #[test]
+    fn to_dict_exclude() {
+        let xml = r#"<Task id="urn:vcloud:task:2" name="test" href="foo"/>"#;
+        let map = to_dict(xml, Some(&["id", "name", "href"]), None, &["href"]).unwrap();
+        assert!(!map.contains_key("href"));
+        assert_eq!(map.get("id"), Some(&"2".to_string()));
+        assert_eq!(map.get("name"), Some(&"test".to_string()));
     }
 }
