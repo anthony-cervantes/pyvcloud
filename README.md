@@ -37,7 +37,7 @@ A struct `VcdApiVersion` provides comparison logic for pre-release API versions
 matching the behavior of the old Python SDK. A helper
 `vcd_api_current_versions` returns the list of supported `VcdApiVersion`
 objects.
-Networking helpers like `cidr_to_netmask`, `uri_to_api_uri`, `build_network_url_from_gateway_url` and `retrieve_compute_policy_id_from_href` have also been ported as part of the migration. A `BasicLoginCredentials` struct stores user, organization and password values. Constants such as `SIZE_1MB`, `SYSTEM_ORG_NAME` and `ALPHA_API_SUBSTRING` mirror common values from the Python client.
+Networking helpers like `cidr_to_netmask`, `uri_to_api_uri`, `build_network_url_from_gateway_url` and `retrieve_compute_policy_id_from_href` have also been ported as part of the migration. A `BasicLoginCredentials` struct stores user, organization and password values. Constants such as `SIZE_1MB`, `SYSTEM_ORG_NAME`, `ALPHA_API_SUBSTRING`, `HEADERS_TO_REDACT` and `UPLOAD_FRAGMENT_MAX_RETRIES` mirror common values from the Python client.
 A utility `filter_attributes` returns common attribute names for selected `ResourceType` values.
 A `compute_policy` module offers constants such as `VDC_COMPUTE_POLICY_MIN_API_VERSION` and a helper `generate_compute_policy_tags` for constructing compute policy XML snippets.
 A `network_constants` module exposes REST endpoint templates such as `FIREWALL_URL_TEMPLATE` for constructing URLs programmatically.
