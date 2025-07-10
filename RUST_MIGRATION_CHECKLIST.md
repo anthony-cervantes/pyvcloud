@@ -11,7 +11,7 @@ This document outlines iterative steps to migrate the deprecated `pyvcloud` Pyth
 - [x] **Establish Build & Test Workflow**
   - Configure `cargo` with continuous integration to run `cargo fmt`, `clippy`, and unit tests.
   - Set up GitHub Actions or other CI to verify builds across platforms.
-- [ ] **Port Core Functionality**
+- [x] **Port Core Functionality**
   - Translate Python modules to Rust modules iteratively, focusing on clean, idiomatic Rust.
   - [x] Ensure each ported component has thorough unit tests.
   - [x] Ported API version helpers including `vcd_api_current_versions`.

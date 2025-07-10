@@ -4,6 +4,7 @@
 pub mod client;
 pub mod compute_policy;
 pub mod network_constants;
+pub mod task_monitor;
 pub mod types;
 pub mod utils;
 pub mod vcd_api_version;
