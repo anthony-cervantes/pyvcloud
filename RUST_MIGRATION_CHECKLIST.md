@@ -15,6 +15,7 @@ This document outlines iterative steps to migrate the deprecated `pyvcloud` Pyth
   - Translate Python modules to Rust modules iteratively, focusing on clean, idiomatic Rust.
   - [x] Ensure each ported component has thorough unit tests.
   - [x] Ported API version helpers including `vcd_api_current_versions`.
+  - [x] Added XML helpers `to_dict`, `task_to_dict` and `disk_to_dict`.
 - [x] **Wrap REST API Interactions**
   - Use Rust HTTP libraries (e.g., `reqwest`) to replace Python REST calls.
   - Provide typed structures and error handling that match vCloud Director APIs.

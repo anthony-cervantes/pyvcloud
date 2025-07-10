@@ -68,6 +68,8 @@ highlighting. The `get_session_endpoints` helper parses a `<Session>` XML
 document and returns a map of `WellKnownEndpoint` values to their hrefs. Utilities
 `get_links` and `find_link` retrieve specific `<Link>` elements from resource
 XML by relation and media type.
+Utilities `task_to_dict` and `disk_to_dict` parse task and disk XML into simple
+maps for easier inspection.
 See [RUST_MIGRATION_CHECKLIST.md](RUST_MIGRATION_CHECKLIST.md) for an overview of the migration plan and progress.
 
 ## Contributing
