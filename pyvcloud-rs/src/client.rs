@@ -1,4 +1,7 @@
+use std::collections::HashMap;
 use std::fmt;
+
+use crate::types::{WELL_KNOWN_ENDPOINTS, WellKnownEndpoint};
 
 /// Constant representing one megabyte.
 pub const SIZE_1MB: usize = 1024 * 1024;
@@ -78,6 +81,31 @@ impl fmt::Display for BasicLoginCredentials {
     }
 }
 
+/// Extract well known session endpoints from a `<Session>` XML document.
+///
+/// The returned map is keyed by `WellKnownEndpoint` values with the
+/// corresponding link `href` attribute as the value.
+pub fn get_session_endpoints(
+    xml: &str,
+) -> Result<HashMap<WellKnownEndpoint, String>, roxmltree::Error> {
+    let doc = roxmltree::Document::parse(xml)?;
+    let mut map = HashMap::new();
+    for endpoint in WELL_KNOWN_ENDPOINTS {
+        let rel = endpoint.relation().to_string();
+        let media_type = endpoint.entity().as_str();
+        if let Some(link) = doc.descendants().find(|n| {
+            n.has_tag_name("Link")
+                && n.attribute("rel") == Some(rel.as_str())
+                && n.attribute("type") == Some(media_type)
+        }) {
+            if let Some(href) = link.attribute("href") {
+                map.insert(*endpoint, href.to_string());
+            }
+        }
+    }
+    Ok(map)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -99,5 +127,24 @@ mod tests {
             "[REDACTED]"
         );
         assert_eq!(redacted.get("Content-Type").unwrap(), "text/plain");
+    }
+
+    #[test]
+    fn parse_session_endpoints() {
+        let xml = r#"
+        <Session xmlns="http://www.vmware.com/vcloud/v1.5">
+            <Link rel="down" type="application/vnd.vmware.vcloud.org+xml" href="https://host/api/org/1" />
+            <Link rel="down" type="application/vnd.vmware.vcloud.query.queryList+xml" href="https://host/api/query" />
+        </Session>
+        "#;
+        let map = get_session_endpoints(xml).unwrap();
+        assert_eq!(
+            map.get(&WellKnownEndpoint::LoggedInOrg).unwrap(),
+            "https://host/api/org/1"
+        );
+        assert_eq!(
+            map.get(&WellKnownEndpoint::QueryList).unwrap(),
+            "https://host/api/query"
+        );
     }
 }

@@ -46,7 +46,8 @@ A helper function `get_safe_members_in_tar_file` is available for safely
 extracting archives. Utility `extract_metadata_value` reads an XML snippet to
 return the contained metadata text. Utility `to_camel_case` assists with case-insensitive name
 matching. The `stdout_xml` helper prints XML to the console with optional
-highlighting.
+highlighting. The `get_session_endpoints` helper parses a `<Session>` XML
+document and returns a map of `WellKnownEndpoint` values to their hrefs.
 See [RUST_MIGRATION_CHECKLIST.md](RUST_MIGRATION_CHECKLIST.md) for an overview of the migration plan and progress.
 
 ## Contributing
