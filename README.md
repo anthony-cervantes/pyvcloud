@@ -47,7 +47,9 @@ extracting archives. Utility `extract_metadata_value` reads an XML snippet to
 return the contained metadata text. Utility `to_camel_case` assists with case-insensitive name
 matching. The `stdout_xml` helper prints XML to the console with optional
 highlighting. The `get_session_endpoints` helper parses a `<Session>` XML
-document and returns a map of `WellKnownEndpoint` values to their hrefs.
+document and returns a map of `WellKnownEndpoint` values to their hrefs. Utilities
+`get_links` and `find_link` retrieve specific `<Link>` elements from resource
+XML by relation and media type.
 See [RUST_MIGRATION_CHECKLIST.md](RUST_MIGRATION_CHECKLIST.md) for an overview of the migration plan and progress.
 
 ## Contributing

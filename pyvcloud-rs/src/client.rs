@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::fmt;
 
-use crate::types::{WELL_KNOWN_ENDPOINTS, WellKnownEndpoint};
+use crate::types::{RelationType, WELL_KNOWN_ENDPOINTS, WellKnownEndpoint};
 
 /// Constant representing one megabyte.
 pub const SIZE_1MB: usize = 1024 * 1024;
@@ -106,6 +106,87 @@ pub fn get_session_endpoints(
     Ok(map)
 }
 
+/// Representation of a `<Link>` element.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Link {
+    pub rel: String,
+    pub media_type: Option<String>,
+    pub href: Option<String>,
+    pub name: Option<String>,
+}
+
+/// Errors from `find_link` when a match cannot be uniquely determined.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum FindLinkError {
+    Missing,
+    Multiple,
+    Parse,
+}
+
+/// Return all links matching `rel` and `media_type` from an XML document.
+pub fn get_links(
+    xml: &str,
+    rel: RelationType,
+    media_type: Option<&str>,
+    name: Option<&str>,
+) -> Result<Vec<Link>, roxmltree::Error> {
+    let doc = roxmltree::Document::parse(xml)?;
+    let rel_str = rel.to_string();
+    let mut links = Vec::new();
+    for node in doc.descendants().filter(|n| n.has_tag_name("Link")) {
+        if let Some(nm) = name {
+            if node.attribute("name") != Some(nm) {
+                continue;
+            }
+        }
+        if node.attribute("rel") == Some(rel_str.as_str()) {
+            let node_media = node.attribute("type");
+            if media_type.is_none() && node_media.is_none()
+                || media_type.is_some() && node_media == media_type
+            {
+                links.push(Link {
+                    rel: node.attribute("rel").unwrap_or("").to_string(),
+                    media_type: node_media.map(|s| s.to_string()),
+                    href: node.attribute("href").map(|s| s.to_string()),
+                    name: node.attribute("name").map(|s| s.to_string()),
+                });
+            }
+        }
+    }
+    Ok(links)
+}
+
+/// Return a single link matching `rel` and `media_type`.
+///
+/// When `fail_if_absent` is true an error is returned if no matching link
+/// exists or if more than one match is found.
+pub fn find_link(
+    xml: &str,
+    rel: RelationType,
+    media_type: Option<&str>,
+    name: Option<&str>,
+    fail_if_absent: bool,
+) -> Result<Option<Link>, FindLinkError> {
+    let links = get_links(xml, rel, media_type, name).map_err(|_| FindLinkError::Parse)?;
+    match links.len() {
+        0 => {
+            if fail_if_absent {
+                Err(FindLinkError::Missing)
+            } else {
+                Ok(None)
+            }
+        }
+        1 => Ok(Some(links.into_iter().next().unwrap())),
+        _ => {
+            if fail_if_absent {
+                Err(FindLinkError::Multiple)
+            } else {
+                Ok(None)
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -146,5 +227,31 @@ mod tests {
             map.get(&WellKnownEndpoint::QueryList).unwrap(),
             "https://host/api/query"
         );
+    }
+
+    #[test]
+    fn link_helpers() {
+        let xml = r#"
+        <Resource xmlns="http://www.vmware.com/vcloud/v1.5">
+            <Link rel="down" type="text/plain" href="https://x/api/a" />
+            <Link rel="down" type="application/json" href="https://x/api/b" />
+        </Resource>
+        "#;
+        let links = get_links(xml, RelationType::Down, Some("text/plain"), None).unwrap();
+        assert_eq!(links.len(), 1);
+        assert_eq!(links[0].href.as_deref(), Some("https://x/api/a"));
+
+        let link = find_link(
+            xml,
+            RelationType::Down,
+            Some("application/json"),
+            None,
+            true,
+        )
+        .unwrap();
+        assert_eq!(link.unwrap().href.unwrap(), "https://x/api/b");
+
+        // missing link returns error when fail_if_absent=true
+        assert!(find_link(xml, RelationType::Up, None, None, true).is_err());
     }
 }
