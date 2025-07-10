@@ -9,6 +9,11 @@ by committing it on the gh-pages branch. Sphinx generates documentation
 by reading Python modules and extracting docstrings into HTML. Github
 Pages serves up documentation online at https://vmware.github.io/pyvcloud.
 
+Rust crate documentation can be generated with `cargo doc --no-deps` and
+hosted alongside the Sphinx output. The generated HTML lives under
+`target/doc` and can be copied to the gh-pages branch just like the Python
+documentation.
+
 Github Pages use Jekyll by default to serve up content. Pyvcloud doc
 builds turn Jekyll off using a .nojekyll file, since Sphinx generates
 everything we need.  This has a couple of advantages. First, it's

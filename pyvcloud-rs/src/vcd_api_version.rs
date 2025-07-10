@@ -1,3 +1,5 @@
+//! Handling of vCloud Director API version parsing and comparison.
+
 use std::cmp::Ordering;
 use std::error::Error;
 use std::fmt;

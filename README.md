@@ -18,6 +18,24 @@ cargo clippy -- -D warnings
 cargo test
 ```
 
+## Using pyvcloud-rs
+
+Add the crate as a dependency in your `Cargo.toml`:
+
+```toml
+[dependencies]
+pyvcloud-rs = { path = "pyvcloud-rs" }
+```
+
+Then import and construct a `Client`:
+
+```rust
+use pyvcloud_rs::Client;
+
+let client = Client::new("https://vcd.example.com");
+println!("API base URI: {}", client.api_base_uri());
+```
+
 These checks are also executed in GitHub Actions on every pull request.
 
 

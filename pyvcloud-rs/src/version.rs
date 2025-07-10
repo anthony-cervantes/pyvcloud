@@ -1,3 +1,5 @@
+//! Enumerations for official vCloud Director API versions.
+
 use std::fmt;
 use std::str::FromStr;
 
