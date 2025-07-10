@@ -1366,6 +1366,83 @@ impl std::str::FromStr for VAppPowerStatus {
     }
 }
 
+/// General status values returned by vCloud Director objects.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum VCloudStatus {
+    CouldNotBeCreated = -1,
+    Unresolved = 0,
+    Resolved = 1,
+    Deployed = 2,
+    Suspended = 3,
+    PoweredOn = 4,
+    WaitingForUserInput = 5,
+    UnknownState = 6,
+    UnrecognizedState = 7,
+    PoweredOff = 8,
+    InconsistentState = 9,
+    ChildrenDoNotAllHaveSameStatus = 10,
+    UploadInitiatedOvfDescriptorPending = 11,
+    UploadInitiatedCopyingContents = 12,
+    UploadInitiatedDiskContentsPending = 13,
+    UploadQuarantined = 14,
+    UploadQuarantineExpired = 15,
+}
+
+impl VCloudStatus {
+    /// Return the textual description of the status code.
+    pub fn description(&self) -> &'static str {
+        match self {
+            VCloudStatus::CouldNotBeCreated => "Could not be created",
+            VCloudStatus::Unresolved => "Unresolved",
+            VCloudStatus::Resolved => "Resolved",
+            VCloudStatus::Deployed => "Deployed",
+            VCloudStatus::Suspended => "Suspended",
+            VCloudStatus::PoweredOn => "Powered on",
+            VCloudStatus::WaitingForUserInput => "Waiting for user input",
+            VCloudStatus::UnknownState => "Unknown state",
+            VCloudStatus::UnrecognizedState => "Unrecognized state",
+            VCloudStatus::PoweredOff => "Powered off",
+            VCloudStatus::InconsistentState => "Inconsistent state",
+            VCloudStatus::ChildrenDoNotAllHaveSameStatus =>
+                "Children do not all have the same status",
+            VCloudStatus::UploadInitiatedOvfDescriptorPending =>
+                "Upload initiated, OVF descriptor pending",
+            VCloudStatus::UploadInitiatedCopyingContents =>
+                "Upload initiated, copying contents",
+            VCloudStatus::UploadInitiatedDiskContentsPending =>
+                "Upload initiated , disk contents pending",
+            VCloudStatus::UploadQuarantined => "Upload has been quarantined",
+            VCloudStatus::UploadQuarantineExpired =>
+                "Upload quarantine period has expired",
+        }
+    }
+
+    /// Convert a numeric status code to a `VCloudStatus` value.
+    pub fn from_code(code: i32) -> Option<Self> {
+        match code {
+            -1 => Some(VCloudStatus::CouldNotBeCreated),
+            0 => Some(VCloudStatus::Unresolved),
+            1 => Some(VCloudStatus::Resolved),
+            2 => Some(VCloudStatus::Deployed),
+            3 => Some(VCloudStatus::Suspended),
+            4 => Some(VCloudStatus::PoweredOn),
+            5 => Some(VCloudStatus::WaitingForUserInput),
+            6 => Some(VCloudStatus::UnknownState),
+            7 => Some(VCloudStatus::UnrecognizedState),
+            8 => Some(VCloudStatus::PoweredOff),
+            9 => Some(VCloudStatus::InconsistentState),
+            10 => Some(VCloudStatus::ChildrenDoNotAllHaveSameStatus),
+            11 => Some(VCloudStatus::UploadInitiatedOvfDescriptorPending),
+            12 => Some(VCloudStatus::UploadInitiatedCopyingContents),
+            13 => Some(VCloudStatus::UploadInitiatedDiskContentsPending),
+            14 => Some(VCloudStatus::UploadQuarantined),
+            15 => Some(VCloudStatus::UploadQuarantineExpired),
+            _ => None,
+        }
+    }
+}
+
 /// Supported network fence modes for vApp networks.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FenceMode {
@@ -1832,26 +1909,7 @@ pub const WELL_KNOWN_ENDPOINTS: &[WellKnownEndpoint] = &[
 ];
 /// Return the vCloud status message for a given status code.
 pub fn vcloud_status_message(status: i32) -> Option<&'static str> {
-    match status {
-        -1 => Some("Could not be created"),
-        0 => Some("Unresolved"),
-        1 => Some("Resolved"),
-        2 => Some("Deployed"),
-        3 => Some("Suspended"),
-        4 => Some("Powered on"),
-        5 => Some("Waiting for user input"),
-        6 => Some("Unknown state"),
-        7 => Some("Unrecognized state"),
-        8 => Some("Powered off"),
-        9 => Some("Inconsistent state"),
-        10 => Some("Children do not all have the same status"),
-        11 => Some("Upload initiated, OVF descriptor pending"),
-        12 => Some("Upload initiated, copying contents"),
-        13 => Some("Upload initiated , disk contents pending"),
-        14 => Some("Upload has been quarantined"),
-        15 => Some("Upload quarantine period has expired"),
-        _ => None,
-    }
+    VCloudStatus::from_code(status).map(|s| s.description())
 }
 
 #[cfg(test)]
@@ -1887,6 +1945,13 @@ mod tests {
     #[test]
     fn status_message_unknown() {
         assert_eq!(vcloud_status_message(42), None);
+    }
+
+    #[test]
+    fn vcloud_status_roundtrip() {
+        let status = VCloudStatus::from_code(8).unwrap();
+        assert_eq!(status, VCloudStatus::PoweredOff);
+        assert_eq!(status.description(), "Powered off");
     }
 
     #[test]
