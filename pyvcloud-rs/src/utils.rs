@@ -216,7 +216,6 @@ pub fn to_dict(
     exclude: &[&str],
 ) -> Result<std::collections::HashMap<String, String>, roxmltree::Error> {
     use std::collections::HashMap;
-
     let doc = roxmltree::Document::parse(xml)?;
     let root = doc.root_element();
     let mut map: HashMap<String, String> = HashMap::new();
@@ -265,6 +264,128 @@ pub fn to_dict(
 
     for &e in exclude {
         map.remove(e);
+    }
+
+    Ok(map)
+}
+
+/// Convert a Task XML snippet to a key-value map.
+///
+/// In addition to the common attributes handled by [`to_dict`], this helper
+/// extracts owner, user, organization and details information when present.
+pub fn task_to_dict(
+    xml: &str,
+) -> Result<std::collections::HashMap<String, String>, roxmltree::Error> {
+    let mut map = to_dict(xml, None, Some(crate::types::ResourceType::Task), &[])?;
+    let doc = roxmltree::Document::parse(xml)?;
+    let root = doc.root_element();
+
+    if let Some(owner) = root.children().find(|n| n.has_tag_name("Owner")) {
+        if let Some(name) = owner.attribute("name") {
+            map.insert("owner_name".to_string(), name.to_string());
+        }
+        if let Some(href) = owner.attribute("href") {
+            map.insert("owner_href".to_string(), href.to_string());
+        }
+        if let Some(t) = owner.attribute("type") {
+            map.insert("owner_type".to_string(), t.to_string());
+        }
+    }
+
+    if let Some(user) = root.children().find(|n| n.has_tag_name("User")) {
+        if let Some(name) = user.attribute("name") {
+            map.insert("user".to_string(), name.to_string());
+        }
+    }
+
+    if let Some(org) = root.children().find(|n| n.has_tag_name("Organization")) {
+        if let Some(name) = org.attribute("name") {
+            map.insert("organization".to_string(), name.to_string());
+        }
+    }
+
+    if let Some(details) = root.children().find(|n| n.has_tag_name("Details")) {
+        if let Some(text) = details.text() {
+            map.insert("details".to_string(), text.to_string());
+        }
+    }
+
+    Ok(map)
+}
+
+/// Convert a Disk XML snippet to a key-value map.
+///
+/// This helper parses standard disk attributes and returns human readable size
+/// information using binary units.
+pub fn disk_to_dict(
+    xml: &str,
+) -> Result<std::collections::HashMap<String, String>, roxmltree::Error> {
+    use bytesize::ByteSize;
+    use std::collections::HashMap;
+
+    let doc = roxmltree::Document::parse(xml)?;
+    let disk = doc.root_element();
+    let mut map: HashMap<String, String> = HashMap::new();
+
+    if let Some(name) = disk.attribute("name") {
+        map.insert("name".to_string(), name.to_string());
+    }
+    if let Some(id) = disk.attribute("id") {
+        if let Some(id) = extract_id(Some(id)) {
+            map.insert("id".to_string(), id);
+        }
+    }
+    if let Some(status) = disk.attribute("status") {
+        map.insert("status".to_string(), status.to_string());
+    }
+
+    let size_bytes = if let Some(size) = disk.attribute("size") {
+        size.parse::<u64>().unwrap_or(0)
+    } else if let Some(size_mb) = disk.attribute("sizeMb") {
+        size_mb.parse::<u64>().unwrap_or(0) * 1024 * 1024
+    } else {
+        0
+    };
+    map.insert("size".to_string(), ByteSize(size_bytes).to_string());
+    map.insert("size_bytes".to_string(), size_bytes.to_string());
+
+    for attr in ["busType", "busSubType", "iops"] {
+        if let Some(v) = disk.attribute(attr) {
+            map.insert(attr.to_string(), v.to_string());
+        }
+    }
+
+    if let Some(owner) = disk.children().find(|n| n.has_tag_name("Owner")) {
+        if let Some(user) = owner.children().find(|n| n.has_tag_name("User")) {
+            if let Some(name) = user.attribute("name") {
+                map.insert("owner".to_string(), name.to_string());
+            }
+        }
+    }
+
+    if let Some(desc) = disk.children().find(|n| n.has_tag_name("Description")) {
+        if let Some(text) = desc.text() {
+            map.insert("description".to_string(), text.to_string());
+        }
+    }
+
+    if let Some(sp) = disk.children().find(|n| n.has_tag_name("StorageProfile")) {
+        if let Some(name) = sp.attribute("name") {
+            map.insert("storageProfile".to_string(), name.to_string());
+        }
+    }
+
+    if let Some(av) = disk.children().find(|n| n.has_tag_name("attached_vms")) {
+        if let Some(vm) = av.children().find(|n| n.has_tag_name("VmReference")) {
+            if let Some(name) = vm.attribute("name") {
+                map.insert("vms_attached".to_string(), name.to_string());
+            }
+            if let Some(href) = vm.attribute("href") {
+                if let Some(id) = href.split("/vm-").last() {
+                    map.insert("vms_attached_id".to_string(), id.to_string());
+                }
+            }
+        }
     }
 
     Ok(map)
@@ -412,11 +533,12 @@ pub fn get_admin_extension_href(href: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, extract_id,
-        extract_metadata_value, filter_attributes, format_xml, get_admin_extension_href,
-        get_admin_href, get_non_admin_href, get_safe_members_in_tar_file, is_admin,
-        metadata_to_dict, netmask_to_cidr_prefix_len, retrieve_compute_policy_id_from_href,
-        to_camel_case, to_dict, to_human, uri_to_api_uri,
+        adapter_type_to_name, build_network_url_from_gateway_url, cidr_to_netmask, disk_to_dict,
+        extract_id, extract_metadata_value, filter_attributes, format_xml,
+        get_admin_extension_href, get_admin_href, get_non_admin_href, get_safe_members_in_tar_file,
+        is_admin, metadata_to_dict, netmask_to_cidr_prefix_len,
+        retrieve_compute_policy_id_from_href, task_to_dict, to_camel_case, to_dict, to_human,
+        uri_to_api_uri,
     };
 
     #[test]
@@ -637,5 +759,24 @@ mod tests {
         assert!(!map.contains_key("href"));
         assert_eq!(map.get("id"), Some(&"2".to_string()));
         assert_eq!(map.get("name"), Some(&"test".to_string()));
+    }
+
+    #[test]
+    fn task_to_dict_parses_nested() {
+        let xml = r#"<Task id="urn:vcloud:task:3" name="deploy"><Owner name="bob" href="/user" type="application/xml"/><Details>ok</Details></Task>"#;
+        let map = task_to_dict(xml).unwrap();
+        assert_eq!(map.get("id"), Some(&"3".to_string()));
+        assert_eq!(map.get("owner_name"), Some(&"bob".to_string()));
+        assert_eq!(map.get("details"), Some(&"ok".to_string()));
+    }
+
+    #[test]
+    fn disk_to_dict_basic() {
+        let xml = r#"<Disk name="d1" id="urn:vcloud:disk:7" sizeMb="1" busType="SCSI"/>"#;
+        let map = disk_to_dict(xml).unwrap();
+        assert_eq!(map.get("name"), Some(&"d1".to_string()));
+        assert_eq!(map.get("id"), Some(&"7".to_string()));
+        assert_eq!(map.get("busType"), Some(&"SCSI".to_string()));
+        assert_eq!(map.get("size_bytes"), Some(&"1048576".to_string()));
     }
 }
