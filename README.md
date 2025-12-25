@@ -1,58 +1,75 @@
-## pyvcloud
+# pyvcloud (Rust)
 
-[![License](https://img.shields.io/pypi/l/pyvcloud.svg)](https://pypi.python.org/pypi/pyvcloud) [![Stable Version](https://img.shields.io/pypi/v/pyvcloud.svg)](https://pypi.python.org/pypi/pyvcloud) [![Build Status](https://img.shields.io/travis/vmware/pyvcloud.svg?style=flat)](https://travis-ci.org/vmware/pyvcloud/)
+`pyvcloud` is now a Rust-native SDK and command-line utility for interacting with VMware vCloud Director. The crate focuses on predictable error handling, a small surface area, and adherence to modern Rust coding standards.
 
-`pyvcloud` is the Python SDK for VMware vCloud Director.
+## Features
 
-Supported API versions are 29.0, 30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0.
+- Blocking client built on `reqwest` for environments that prefer synchronous flows.
+- Helpers for authenticating with credentials or pre-issued tokens.
+- Convenience functions for health checks and listing organizations.
+- A CLI binary (`pyvcloud`) offering login, health-check, and organization listing helpers.
 
-## Installation
+## Getting started
 
-In general, `pyvcloud` can be installed with the following command:
-```shell
-$ pip install --user pyvcloud
-```
-Depending on your operating system and distribution you
-may need additional packages to install successfully. See
-[install.md](docs/install.md) for full details.
+### Prerequisites
 
-## Testing
+- Rust toolchain 1.75+ (install via [rustup](https://rustup.rs)).
 
-Contributions to `pyvcloud` are welcome and it should include unit tests. See the [contributing guide](CONTRIBUTING.md) for details.
+### Build from source
 
-Check out the latest version and install:
-
-```shell
+```bash
+# clone the repository
 git clone https://github.com/vmware/pyvcloud.git
 cd pyvcloud
-virtualenv .venv
-source .venv/bin/activate
-python setup.py develop
+
+# compile the crate and run the test suite
+cargo build
+cargo test
 ```
 
-Sample test parameters are in file [tests/config.yml](tests/config.yml). Create a copy to specify your own settings and use the `VCD_TEST_CONFIG_FILE` env variable.
+### Using the CLI
 
-```shell
-cd tests
-cp config.yml private.config.yml
-# customize credentials and other parameters
-export VCD_TEST_CONFIG_FILE=private.config.yml
-# run unit test
-python -m unittest vcd_login vcd_catalog_setup
-# run just a test method
-python -m unittest vcd_catalog_setup.TestCatalogSetup.test_validate_ova
+```bash
+# show help
+cargo run -- --help
+
+# verify connectivity to the API root
+cargo run -- --base-url https://vcloud.example.com health-check
+
+# authenticate with credentials and print the returned token
+cargo run -- --base-url https://vcloud.example.com login admin "SuperSecretPassword"
+
+# list organizations using an existing token
+cargo run -- --base-url https://vcloud.example.com --token abc123 list-orgs
 ```
 
-See [tests](tests/) for a list of current unit tests written for the new SDK implementation.
+Environment variables are available for convenience:
 
+- `PVCLOUD_BASE_URL`
+- `PVCLOUD_ORG`
+- `PVCLOUD_TOKEN`
 
-## Notes
+### Library usage
 
-Please note that this project is under development and the interfaces might change over time.
+Add `pyvcloud` as a dependency in your `Cargo.toml` and construct the client directly:
 
-`pyvcloud` is used by [vcd-cli](https://vmware.github.io/vcd-cli), the Command Line Interface for VMware vCloud Director. It requires Python 3.6 or higher.
+```rust
+use pyvcloud::VCloudClient;
 
-Previous versions and deprecated code can be found in this repository under [tag 18.2.2](https://github.com/vmware/pyvcloud/tree/18.2.2).
+fn main() -> Result<(), pyvcloud::ClientError> {
+    let mut client = VCloudClient::new("https://vcloud.example.com", "System")?;
+    let token = client.login_with_credentials("admin", "password")?;
+
+    println!("Authenticated token: {}", token);
+
+    let orgs = client.list_organizations()?;
+    for org in orgs {
+        println!("{} ({})", org.name, org.id);
+    }
+
+    Ok(())
+}
+```
 
 ## Contributing
 
