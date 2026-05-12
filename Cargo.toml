@@ -1,0 +1,20 @@
+[package]
+name = "pyvcloud"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+description = "Rust SDK for VMware Cloud Director"
+license = "Apache-2.0"
+repository = "https://github.com/vmware/pyvcloud"
+readme = "README.md"
+keywords = ["vmware", "vcloud", "vcd", "sdk"]
+categories = ["api-bindings"]
+
+[dependencies]
+quick-xml = "0.36"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+url = "2"
+

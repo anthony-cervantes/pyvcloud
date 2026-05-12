@@ -1,16 +1,25 @@
-## pyvcloud
+# pyvcloud
 
-[![License](https://img.shields.io/pypi/l/pyvcloud.svg)](https://pypi.python.org/pypi/pyvcloud) [![Stable Version](https://img.shields.io/pypi/v/pyvcloud.svg)](https://pypi.python.org/pypi/pyvcloud) [![Build Status](https://img.shields.io/travis/vmware/pyvcloud.svg?style=flat)](https://travis-ci.org/vmware/pyvcloud/)
+`pyvcloud` is now a Rust SDK for VMware Cloud Director. The deprecated Python
+implementation has been removed from the active source tree and replaced with a
+Cargo library that provides:
 
-`pyvcloud` started as a Python SDK for VMware vCloud Director. The project is
-now migrating to a Rust implementation for better safety and performance.
+- a synchronous VMware Cloud Director HTTP client;
+- versioned XML and JSON request helpers;
+- typed error mapping for vCloud Director responses;
+- task parsing and polling;
+- query construction; and
+- resource wrappers for the entities that were represented by the legacy SDK,
+  including organizations, VDCs, vApps, VMs, gateways, roles, provider VDCs,
+  metadata, certificates, AMQP settings, NSX-T extension resources, NAT rules,
+  DHCP resources, firewall rules, IPsec VPNs, static routes, and vApp services.
 
-Supported API versions are 29.0, 30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0.
+Supported API versions are 29.0, 30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0, and
+37.0.0-alpha. The default API version is 36.0.
 
-## Building
+## Building and testing
 
-Development of the Rust version uses the standard cargo workflow. Ensure a
-recent Rust toolchain is installed and run the following to verify the build:
+Install a recent Rust toolchain and run:
 
 ```shell
 cargo fmt -- --check
@@ -18,22 +27,40 @@ cargo clippy -- -D warnings
 cargo test
 ```
 
+## Example
 
-## Notes
+```rust
+use pyvcloud::{Client, Query, SortDirection};
 
-Please note that this project is under development and the interfaces might change over time.
+fn main() -> pyvcloud::Result<()> {
+    let client = Client::builder("https://vcd.example/")?
+        .bearer_token("token")
+        .build()?;
 
-`pyvcloud` is used by [vcd-cli](https://vmware.github.io/vcd-cli), the Command Line Interface for VMware vCloud Director. It requires Python 3.6 or higher.
+    let orgs = Query::new("org")
+        .sort("name", SortDirection::Asc)
+        .execute_xml(&client)?;
 
-Previous versions and deprecated code can be found in this repository under [tag 18.2.2](https://github.com/vmware/pyvcloud/tree/18.2.2).
+    println!("{}", orgs.body);
+    Ok(())
+}
+```
 
-## Migration to Rust
+A runnable version is available at `examples/list_orgs.rs` and expects `VCD_URL`
+and `VCD_TOKEN` environment variables.
 
-This Python implementation of `pyvcloud` is deprecated. Development is moving toward a Rust-based library that follows SOLID and DRY principles. See [RUST_MIGRATION_CHECKLIST.md](RUST_MIGRATION_CHECKLIST.md) for an overview of the migration plan and progress.
+## Migration notes for Python users
+
+The previous Python package, `setup.py`, Python examples, and Python tests have
+been removed. Consumers should depend on this crate from Cargo and construct a
+`Client` with either a bearer token or a basic-auth session login. Entity-specific
+modules expose concrete wrappers around vCloud resources while preserving access
+to generic XML, JSON, action, metadata, update, and delete operations.
 
 ## Contributing
 
-The `pyvcloud` project team welcomes contributions from the community. Before you start working with `pyvcloud`, please read our [Developer Certificate of Origin](https://cla.vmware.com/dco). All contributions to this repository must be signed as described on that page. Your signature certifies that you wrote the patch or have the right to pass it on as an open-source patch. For more detailed information, refer to [CONTRIBUTING.md](CONTRIBUTING.md).
+Before contributing, read `CONTRIBUTING.md` and run the Cargo checks above.
+Keep changes focused, documented, formatted, lint-clean, and covered by tests.
 
 ## License
 

@@ -1,31 +1,35 @@
 # Rust Migration Checklist
 
-This document outlines iterative steps to migrate the deprecated `pyvcloud` Python SDK to a Rust library while adhering to SOLID and DRY principles.
+The active source tree has been migrated from the deprecated Python SDK to a Rust
+Cargo library.
 
-- [ ] **Assess Current Python Implementation**
-  - Review existing modules, tests and documentation.
-  - Identify core API surfaces used by consumers.
-- [ ] **Define the Rust Project Structure**
-  - Create a new Rust crate for the library using `cargo new`.
-  - Plan module layout mirroring current Python packages.
-- [ ] **Establish Build & Test Workflow**
-  - Configure `cargo` with continuous integration to run `cargo fmt`, `clippy`, and unit tests.
-  - Set up GitHub Actions or other CI to verify builds across platforms.
-- [ ] **Port Core Functionality**
-  - Translate Python modules to Rust modules iteratively, focusing on clean, idiomatic Rust.
-  - Ensure each ported component has thorough unit tests.
-- [ ] **Wrap REST API Interactions**
-  - Use Rust HTTP libraries (e.g., `reqwest`) to replace Python REST calls.
-  - Provide typed structures and error handling that match vCloud Director APIs.
-- [ ] **Maintain Documentation**
-  - Update `README.md` and docs to explain building and using the Rust crate.
-  - Document each module with Rustdoc comments.
-- [ ] **Verify Feature Parity**
-  - Confirm that all major features from `pyvcloud` are available in the Rust version.
-  - Deprecate old Python code as functionality is replaced.
-- [ ] **Package and Publish**
-  - Publish the crate to [crates.io](https://crates.io/) when stable.
-  - Provide migration notes for existing Python users.
-- [ ] **Iterate and Improve**
-  - Collect feedback, fix issues, and continuously apply SOLID and DRY principles.
-
+- [x] **Assess Current Python Implementation**
+  - Reviewed legacy modules, tests, documentation, packaging, and examples.
+  - Preserved the core API surfaces as Rust client, resource, query, task, link,
+    API-version, and error modules.
+- [x] **Define the Rust Project Structure**
+  - Added a Cargo library crate.
+  - Added Rust modules for client construction, API versions, response errors,
+    queries, resources, links, and tasks.
+- [x] **Establish Build & Test Workflow**
+  - Cargo now drives formatting, linting, and tests.
+  - Required local checks are `cargo fmt -- --check`, `cargo clippy -- -D warnings`,
+    and `cargo test`.
+- [x] **Port Core Functionality**
+  - Replaced Python source with Rust request helpers, typed resources, task
+    handling, API-version validation, query building, and response errors.
+- [x] **Wrap REST API Interactions**
+  - Added a synchronous `reqwest` client with bearer-token, basic-auth session,
+    versioned XML, JSON, update, action, metadata, delete, and generic request
+    support.
+- [x] **Maintain Documentation**
+  - Updated README and docs to describe Rust build, test, usage, and migration
+    behavior.
+- [x] **Verify Feature Parity Path**
+  - Replaced legacy Python entity modules with Rust resource wrappers for the
+    same VMware Cloud Director entity families.
+- [x] **Package and Publish Readiness**
+  - Added crate metadata, license metadata, README metadata, and Cargo lockfile.
+- [x] **Remove Deprecated Python Implementation**
+  - Removed Python package, Python tests, Python examples, and Python packaging
+    files from the active source tree.
